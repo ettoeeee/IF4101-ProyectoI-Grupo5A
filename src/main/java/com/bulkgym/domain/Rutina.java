@@ -1,10 +1,11 @@
 package com.bulkgym.domain;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Rutina {
 	private int idRutina;
-	private LocalDate fechaCreacion,
+	private Date fechaCreacion,
 					  fechaRenovacion;
 	private String horario,
 			       objetivo,
@@ -17,16 +18,16 @@ public class Rutina {
 	public void setIdRutina(int idRutina) {
 		this.idRutina = idRutina;
 	}
-	public LocalDate getFechaCreacion() {
+	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
-	public void setFechaCreacion(LocalDate fechaCreacion) {
+	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
-	public LocalDate getFechaRenovacion() {
+	public Date getFechaRenovacion() {
 		return fechaRenovacion;
 	}
-	public void setFechaRenovacion(LocalDate fechaRenovacion) {
+	public void setFechaRenovacion(Date fechaRenovacion) {
 		this.fechaRenovacion = fechaRenovacion;
 	}
 	public String getHorario() {
