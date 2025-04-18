@@ -3,13 +3,12 @@ package com.bulkgym.business;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.bulkgym.business.ClienteBusiness;
 import com.bulkgym.domain.Cliente;
 
 public class ClienteBusinessTest {
@@ -29,7 +28,7 @@ public class ClienteBusinessTest {
         c.setIdPersona(id);
         c.setApellidos("Apellido");
         c.setCorreoElectronico("correo@test.com");
-        c.setFechaNacimiento(LocalDate.of(2000, 1, 1));
+        c.setFechaNacimiento(Date.valueOf("2000-1,-1"));
         c.setImagenRuta("ruta.png");
         c.setTelefono("123456789");
         c.setSexo('M');

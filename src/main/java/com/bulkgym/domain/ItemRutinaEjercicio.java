@@ -3,15 +3,13 @@ package com.bulkgym.domain;
 public class ItemRutinaEjercicio {
     private int seriesEjercicio;
     private int repeticionesEjercicio;
+    private int idItemRutinaEjercicio;
     
-   
     private Ejercicio ejercicio;  
     private Rutina rutina;       
 
-
     public ItemRutinaEjercicio() {
     }
-
 
     public ItemRutinaEjercicio(int seriesEjercicio, int repeticionesEjercicio, Ejercicio ejercicio, Rutina rutina) {
         this.seriesEjercicio = seriesEjercicio;
@@ -19,9 +17,17 @@ public class ItemRutinaEjercicio {
         this.ejercicio = ejercicio;
         this.rutina = rutina;
     }
+    
+    public int getIdItemRutinaEjercicio() {
+		return idItemRutinaEjercicio;
+	}
 
 
-    public int getSeriesEjercicio() {
+	public void setIdItemRutinaEjercicio(int idItemRutinaEjercicio) {
+		this.idItemRutinaEjercicio = idItemRutinaEjercicio;
+	}
+
+	public int getSeriesEjercicio() {
         return seriesEjercicio;
     }
 

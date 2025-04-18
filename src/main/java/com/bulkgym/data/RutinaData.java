@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bulkgym.domain.Ejercicio;
 import com.bulkgym.domain.ItemRutinaMedida;
-import com.bulkgym.domain.MedidaCorporal;
 import com.bulkgym.domain.Rutina;
 
 @Repository
@@ -72,5 +71,19 @@ public class RutinaData {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idCliente);
         return count != null && count > 0;
     }
+    
+    @Transactional(readOnly = true)
+    public Rutina buscarPorId(int idRutina) {
+        String sql = """
+            SELECT id_rutina, id_cliente, id_instructor, fecha_creacion, fecha_renovacion, 
+                   horario, objetivo, lesiones, padecimientos
+            FROM Rutina
+            WHERE id_rutina = ?
+        """;
+
+		List<Rutina> lista = jdbcTemplate.query(sql, new RutinaExtractor(), idRutina);
+        return lista.isEmpty() ? null : lista.get(0);
+    }
+
 }
 

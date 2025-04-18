@@ -1,11 +1,11 @@
 package com.bulkgym.domain;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Instructor extends Persona{
 
 	private int idInstructor;
-	private LocalDate fechaIngreso;
+	private Date fechaIngreso;
 	
 	public int getIdInstructor() {
 		return idInstructor;
@@ -13,11 +13,11 @@ public class Instructor extends Persona{
 	public void setIdInstructor(int idInstructor) {
 		this.idInstructor = idInstructor;
 	}
-	public LocalDate getFechaIngreso() {
+	public Date getFechaIngreso() {
 		return fechaIngreso;
 	}
-	public void setFechaIngreso(LocalDate fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
+	public void setFechaIngreso(Date date) {
+		this.fechaIngreso = date;
 	}
 	// End of getters-setters.	
 }// End of class [Instructor].
