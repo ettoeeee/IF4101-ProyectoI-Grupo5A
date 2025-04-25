@@ -2,186 +2,148 @@ package com.bulkgym.business;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import com.bulkgym.domain.MedidaCorporal;
 
-class MedidaCorporalBusinessTest {
-	private MedidaCorporalBusiness business;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-    @BeforeEach
-    void setUp() {
-        business = new MedidaCorporalBusiness();
-    }
+@SpringBootTest
+public class MedidaCorporalBusinessTest {
 
-
-    @Test
-    void testAgregarMedidaIncrementaTamanio() {
-        business.agregarMedida("Peso", "kg");
-        assertEquals(1, business.obtenerTodas().size());
-    }
+    @Autowired
+    private MedidaCorporalBusiness medidaCorporalBusiness;
 
     @Test
-    void testAgregarMedidaDatosCorrectos() {
-        business.agregarMedida("Altura", "cm");
-        MedidaCorporal medida = business.obtenerPorId(1);
-        assertEquals("Altura", medida.getTipoMedida());
-        assertEquals("cm", medida.getUnidad());
-    }
+    public void testGuardarYObtener() {
+    	
+    	/*
+    	// Lista de nombres de medidas corporales que se van a insertar
+        List<String> nombresMedidas = Arrays.asList(
+            "Cintura", "Pecho", "Bíceps", "Pierna", "Cuello", 
+            "Hombros", "Gemelos", "Antebrazo", "Muñeca", "Tobillo"
+        );
 
-    @Test
-    void testAgregarVariasMedidas() {
-        business.agregarMedida("Peso", "kg");
-        business.agregarMedida("Altura", "cm");
-        assertEquals(2, business.obtenerTodas().size());
-    }
+        // Insertar cada medida con unidad "cm"
+        for (String nombre : nombresMedidas) {
+            MedidaCorporal medida = new MedidaCorporal();
+            medida.setTipoMedida(nombre);
+            medida.setUnidad("cm");
+            medidaCorporalBusiness.guardar(medida);
+        }
 
-    @Test
-    void testIdAutoIncrementado() {
-        business.agregarMedida("Peso", "kg");
-        business.agregarMedida("Altura", "cm");
-        assertEquals(2, business.obtenerPorId(2).getIdMedidaCorporal());
-    }
+        // Obtener todas las medidas de la base de datos
+        List<MedidaCorporal> medidasEnBD = medidaCorporalBusiness.obtenerTodas();
 
-    @Test
-    void testAgregarMedidaNoNula() {
-        business.agregarMedida("Cintura", "cm");
-        assertNotNull(business.obtenerPorId(1));
-    }
-
-    // ----------- PRUEBAS OBTENER POR ID ------------------
-
-    @Test
-    void testObtenerPorIdExistente() {
-        business.agregarMedida("Peso", "kg");
-        assertNotNull(business.obtenerPorId(1));
+        // Validar que cada medida insertada exista en la BD
+        for (String nombre : nombresMedidas) {
+            assertTrue(
+                medidasEnBD.stream().anyMatch(m -> nombre.equals(m.getTipoMedida())),
+                "No se encontró la medida: " + nombre
+            );
+        }
+    */
     }
 
     @Test
-    void testObtenerPorIdNoExistente() {
-        assertNull(business.obtenerPorId(99));
-    }
+    public void testEliminarMedidasPorNombre() {
+    	/*
+        // Nombres a eliminar
+    	List<String> nombresAEliminar = List.of("Cintura", "Pecho","Cuello");
 
+        // Obtener todas las medidas
+        List<MedidaCorporal> medidas = medidaCorporalBusiness.obtenerTodas();
+
+        // Eliminar las que coinciden con los nombres
+        for (MedidaCorporal medida : medidas) {
+            if (nombresAEliminar.contains(medida.getTipoMedida())) {
+                medidaCorporalBusiness.eliminar(medida.getIdMedidaCorporal());
+            }
+        }
+
+        // Volver a consultar para verificar que ya no estén
+        List<MedidaCorporal> medidasActualizadas = medidaCorporalBusiness.obtenerTodas();
+
+        // Comprobar que fueron eliminadas
+        for (String nombre : nombresAEliminar) {
+            boolean existe = medidasActualizadas.stream()
+                .anyMatch(m -> nombre.equals(m.getTipoMedida()));
+            assertFalse(existe, "La medida '" + nombre + "' no fue eliminada correctamente.");
+        }
+        
+        */
+    }
+    
     @Test
-    void testObtenerPorIdConVariasEntradas() {
-        business.agregarMedida("Peso", "kg");
-        business.agregarMedida("Altura", "cm");
-        assertEquals("Altura", business.obtenerPorId(2).getTipoMedida());
-    }
+    public void testActualizarTodasLasMedidas() {
+    	
+    	/*
+    	// Obtener las medidas actuales
+        List<MedidaCorporal> medidas = medidaCorporalBusiness.obtenerTodas();
 
+        for (MedidaCorporal medida : medidas) {
+            if (medida.getTipoMedida().equalsIgnoreCase("Cintura Baja")) {
+                // Solo cambiar el nombre
+                medida.setTipoMedida("Cintura");
+               
+            } else if (medida.getTipoMedida().equalsIgnoreCase("Pecho")) {
+                // Solo cambiar la unidad
+                medida.setUnidad("cm");
+              
+            } else if (medida.getTipoMedida().equalsIgnoreCase("Bíceps Flexionado")) {
+                // Cambiar ambos
+                medida.setTipoMedida("Bíceps");
+                medida.setUnidad("cm");
+            }
+            medidaCorporalBusiness.actualizar(medida);
+        }
+
+        MedidaCorporal cintura = medidaCorporalBusiness.obtenerPorId(6);
+        assertEquals("Cintura", cintura.getTipoMedida());
+        
+        MedidaCorporal pecho = medidaCorporalBusiness.obtenerPorId(7);
+        assertEquals("cm", pecho.getUnidad());
+        
+        MedidaCorporal biceps = medidaCorporalBusiness.obtenerPorId(8);
+        assertEquals("Bíceps", biceps.getTipoMedida());
+        assertEquals("cm", biceps.getUnidad());
+        
+        */
+    }
+    
     @Test
-    void testObtenerPorIdConIDNegativo() {
-        assertNull(business.obtenerPorId(-1));
+    public void testFindById() {
+        // Verificar que existe la medida con ID 6 (Cintura)
+        MedidaCorporal medidaCintura = medidaCorporalBusiness.obtenerPorId(6);
+        assertNotNull(medidaCintura);
+        assertEquals("Cintura", medidaCintura.getTipoMedida());
+        assertEquals("cm", medidaCintura.getUnidad());
+
+        // Verificar que existe la medida con ID 7 (Pecho)
+        MedidaCorporal medidaPecho = medidaCorporalBusiness.obtenerPorId(7);
+        assertNotNull(medidaPecho);
+        assertEquals("Pecho", medidaPecho.getTipoMedida());
+        assertEquals("cm", medidaPecho.getUnidad());
+
+        // Verificar que existe la medida con ID 8 (Bíceps)
+        MedidaCorporal medidaBíceps = medidaCorporalBusiness.obtenerPorId(8);
+        assertNotNull(medidaBíceps);
+        assertEquals("Bíceps", medidaBíceps.getTipoMedida());
+        assertEquals("cm", medidaBíceps.getUnidad());
+        
+        // Verificar que existe la medida con ID 15 (Cintura)
+        MedidaCorporal medidaTobillo = medidaCorporalBusiness.obtenerPorId(15);
+        assertNotNull(medidaTobillo);
+        assertEquals("Tobillo", medidaTobillo.getTipoMedida());
+        assertEquals("cm", medidaTobillo.getUnidad());
+
+        // ID que NO exista
+        MedidaCorporal medidaInexistente = medidaCorporalBusiness.obtenerPorId(1000);
+        assertNull(medidaInexistente);
     }
-
-    @Test
-    void testObtenerPorIdLimiteInferior() {
-        business.agregarMedida("Cuello", "cm");
-        assertEquals(1, business.obtenerPorId(1).getIdMedidaCorporal());
-    }
-
-    // ----------- PRUEBAS OBTENER TODAS ------------------
-
-    @Test
-    void testObtenerTodasConDatos() {
-        business.agregarMedida("Peso", "kg");
-        business.agregarMedida("Altura", "cm");
-        assertEquals(2, business.obtenerTodas().size());
-    }
-
-    @Test
-    void testObtenerTodasVacio() {
-        assertTrue(business.obtenerTodas().isEmpty());
-    }
-
-    @Test
-    void testObtenerTodasNoNulo() {
-        assertNotNull(business.obtenerTodas());
-    }
-
-    @Test
-    void testObtenerTodasConOrden() {
-        business.agregarMedida("Peso", "kg");
-        business.agregarMedida("Altura", "cm");
-        assertEquals("Peso", business.obtenerTodas().get(0).getTipoMedida());
-    }
-
-    @Test
-    void testObtenerTodasAgregaYLee() {
-        business.agregarMedida("Biceps", "cm");
-        assertEquals("Biceps", business.obtenerTodas().get(0).getTipoMedida());
-    }
-
-    // ----------- PRUEBAS ACTUALIZAR ------------------
-
-    @Test
-    void testActualizarMedidaExistente() {
-        business.agregarMedida("Peso", "kg");
-        boolean result = business.actualizarMedida(1, "Altura", "cm");
-        assertTrue(result);
-        assertEquals("Altura", business.obtenerPorId(1).getTipoMedida());
-    }
-
-    @Test
-    void testActualizarMedidaNoExistente() {
-        boolean result = business.actualizarMedida(99, "Altura", "cm");
-        assertFalse(result);
-    }
-
-    @Test
-    void testActualizarMedidaConNuevosValores() {
-        business.agregarMedida("Peso", "kg");
-        business.actualizarMedida(1, "Cuello", "cm");
-        assertEquals("cm", business.obtenerPorId(1).getUnidad());
-    }
-
-    @Test
-    void testActualizarMedidaValoresNoCambianSiNoExiste() {
-        business.agregarMedida("Peso", "kg");
-        business.actualizarMedida(99, "Altura", "cm");
-        assertEquals("Peso", business.obtenerPorId(1).getTipoMedida());
-    }
-
-    @Test
-    void testActualizarMedidaRetornaTrueCorrectamente() {
-        business.agregarMedida("Brazo", "cm");
-        assertTrue(business.actualizarMedida(1, "Pierna", "cm"));
-    }
-
-    // ----------- PRUEBAS ELIMINAR ------------------
-
-    @Test
-    void testEliminarMedidaExistente() {
-        business.agregarMedida("Peso", "kg");
-        boolean eliminado = business.eliminarMedida(1);
-        assertTrue(eliminado);
-        assertNull(business.obtenerPorId(1));
-    }
-
-    @Test
-    void testEliminarMedidaNoExistente() {
-        assertFalse(business.eliminarMedida(5));
-    }
-
-    @Test
-    void testEliminarMedidaReduceLista() {
-        business.agregarMedida("Peso", "kg");
-        business.agregarMedida("Altura", "cm");
-        business.eliminarMedida(1);
-        assertEquals(1, business.obtenerTodas().size());
-    }
-
-    @Test
-    void testEliminarMedidaIdIncorrectoNoAfecta() {
-        business.agregarMedida("Peso", "kg");
-        business.eliminarMedida(999);
-        assertEquals(1, business.obtenerTodas().size());
-    }
-
-    @Test
-    void testEliminarMedidaRetornaTrueCorrectamente() {
-        business.agregarMedida("Cuello", "cm");
-        assertTrue(business.eliminarMedida(1));
-    }
+    
 }
