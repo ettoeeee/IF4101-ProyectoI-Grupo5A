@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 
 import com.bulkgym.domain.Ejercicio;
 
-
 public class EjercicioExtractor implements ResultSetExtractor<List<Ejercicio>> {
 
 	@Override
@@ -27,7 +26,7 @@ public class EjercicioExtractor implements ResultSetExtractor<List<Ejercicio>> {
 				ejercicio = new Ejercicio();
 				ejercicio.setIdEjercicio(id);
 				ejercicio.setNombreEjercicio(rs.getString("nombre_ejercicio"));
-				//ejercicio.getCategoriaEjercicio().setNombreCategoria(rs.getString("nombre_categoria"));
+				ejercicio.getCategoriaEjercicio().setNombreCategoria(rs.getString("nombre_categoria"));
 				map.put(id, ejercicio);
 				
 			}

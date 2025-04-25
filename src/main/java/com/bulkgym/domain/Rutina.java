@@ -1,10 +1,10 @@
 package com.bulkgym.domain;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Rutina {
-	private int idRutina;
+	private int idRutina,
+				idCliente;
 	private Date fechaCreacion,
 					  fechaRenovacion;
 	private String horario,
@@ -54,5 +54,11 @@ public class Rutina {
 	public void setPadecimientos(String padecimientos) {
 		this.padecimientos = padecimientos;
 	}
+    public int getIdCliente() {
+        return idCliente;
+    }
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
 	// End of getters-setters.
 }// End of class [Rutina].

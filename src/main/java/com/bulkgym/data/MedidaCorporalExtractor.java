@@ -1,16 +1,18 @@
 package com.bulkgym.data;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.bulkgym.domain.MedidaCorporal;
 
-import org.springframework.jdbc.core.RowCallbackHandler;
+public class MedidaCorporalExtractor {
 
-public class MedidaCorporalExtractor implements RowCallbackHandler {
-
-	@Override
-	public void processRow(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
-
-	}
-
+    public MedidaCorporal extraerMedida(ResultSet rs) throws SQLException {
+        MedidaCorporal m = new MedidaCorporal();
+        m.setIdMedidaCorporal(rs.getInt("idMedidaCorporal"));
+        m.setTipoMedida(rs.getString("tipoMedida"));
+        m.setUnidad(rs.getString("unidad"));
+        return m;
+    }
 }
+

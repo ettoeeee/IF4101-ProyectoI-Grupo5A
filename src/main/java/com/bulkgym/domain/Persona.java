@@ -1,6 +1,6 @@
 package com.bulkgym.domain;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Persona {
 	private int idPersona;
@@ -9,7 +9,7 @@ public class Persona {
 				   telefono,
 				   correoElectronico,
 				   imagenRuta;
-	private LocalDate fechaNacimiento;
+	private Date fechaNacimiento;
 	private char sexo;
 	
 	public int getIdPersona() {
@@ -48,11 +48,11 @@ public class Persona {
 	public void setImagenRuta(String imagenRuta) {
 		this.imagenRuta = imagenRuta;
 	}
-	public LocalDate getFechaNacimiento() {
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+	public void setFechaNacimiento(Date date) {
+		this.fechaNacimiento = date;
 	}
 	public char getSexo() {
 		return sexo;
