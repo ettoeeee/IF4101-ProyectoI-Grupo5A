@@ -70,7 +70,7 @@ public class ReportePdfUtil {
 
                 for (ItemRutinaEjercicio e : dto.getEjercicios()) {
                     tablaEjercicios.addCell(e.getEjercicio().getNombreEjercicio());
-                    tablaEjercicios.addCell(e.getEjercicio().getCategoriaEjercicio().getNombreCategoria());
+                    //tablaEjercicios.addCell(e.getEjercicio().getCategoriaEjercicio().getNombreCategoria());
                     tablaEjercicios.addCell(String.valueOf(e.getSeriesEjercicio()));
                     tablaEjercicios.addCell(String.valueOf(e.getRepeticionesEjercicio()));
                 }

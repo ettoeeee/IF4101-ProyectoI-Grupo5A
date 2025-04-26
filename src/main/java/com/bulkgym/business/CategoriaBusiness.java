@@ -3,6 +3,7 @@ package com.bulkgym.business;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.bulkgym.data.CategoriaEjercicioData;
@@ -11,7 +12,7 @@ import com.bulkgym.domain.CategoriaEjercicio;
 @Service
 public class CategoriaBusiness {
 
-    @Autowired
+
     private CategoriaEjercicioData categoriaData;
 
     public List<CategoriaEjercicio> buscarCategoriaPorId(int idCategoria) {

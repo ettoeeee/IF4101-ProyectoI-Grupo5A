@@ -10,7 +10,7 @@ import com.bulkgym.data.UsuarioData;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // poner aca el numerito de angular localhost
+//@CrossOrigin(origins = "*") // poner aca el numerito de angular localhost
 public class UsuarioRestController {
 
     @Autowired
