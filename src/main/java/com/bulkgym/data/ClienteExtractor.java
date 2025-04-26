@@ -8,7 +8,6 @@ import com.bulkgym.domain.Cliente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-
 public class ClienteExtractor implements ResultSetExtractor<List<Cliente>> {
 
     @Override
@@ -34,6 +33,9 @@ public class ClienteExtractor implements ResultSetExtractor<List<Cliente>> {
                 cliente.setTelefono(rs.getString("telefono"));
                 cliente.setCorreoElectronico(rs.getString("correo_electronico"));
                 cliente.setImagenRuta(rs.getString("imagen"));
+                cliente.setDireccion(rs.getString("direccion"));
+                cliente.setNombreContactoEmergencia(rs.getString("nombre_contacto_emergencia"));
+                cliente.setTelContactoEmergencia(rs.getString("tel_contacto_emergencia"));
 
                 mapa.put(id, cliente);
             }
