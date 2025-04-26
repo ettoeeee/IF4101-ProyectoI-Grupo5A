@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/reportes")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class ReporteRutinaRestController {
 
     @Autowired
