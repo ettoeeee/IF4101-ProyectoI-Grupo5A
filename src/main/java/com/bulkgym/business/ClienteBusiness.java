@@ -22,7 +22,9 @@ public class ClienteBusiness {
 	//Agregar un nuevo cliente
 	public void agregarCliente(Cliente cliente) {
 	    boolean existe = false;
+	    System.out.println("Intentando agregar cliente con ID: " + cliente.getIdCliente() + ", nombre: " + cliente.getNombre());
 	    for (int i = 0; i < clientes.size(); i++) {
+	        System.out.println("Cliente existente en la lista (ID): " + clientes.get(i).getIdCliente());
 	        if (clientes.get(i).getIdCliente() == cliente.getIdCliente()) {
 	            existe = true;
 	            break;
@@ -30,9 +32,9 @@ public class ClienteBusiness {
 	    }
 	    if (!existe) {
 	        clientes.add(cliente);
-	        System.out.println("Cliente agregado manualmente: " + cliente.getNombre());
+	        System.out.println("Cliente agregado manualmente: " + cliente.getNombre() + ". Tamaño de la lista ahora: " + clientes.size());
 	    } else {
-	        System.out.println("Ya existe un cliente con ID: " + cliente.getIdCliente());
+	        System.out.println("Ya existe un cliente con ID: " + cliente.getIdCliente() + ". No se agregó.");
 	    }
 	}
 

@@ -28,8 +28,7 @@ public class ClienteBusinessTest {
         c.setIdPersona(id);
         c.setApellidos("Apellido");
         c.setCorreoElectronico("correo@test.com");
-        c.setFechaNacimiento(Date.valueOf("2000-1,-1"));
-        c.setImagenRuta("ruta.png");
+        c.setFechaNacimiento(Date.valueOf("2000-01-01")); // Ejemplo para el 1 de enero de 2000        c.setImagenRuta("ruta.png");
         c.setTelefono("123456789");
         c.setSexo('M');
         return c;
