@@ -3,30 +3,27 @@ package com.bulkgym.domain;
 import java.util.List;
 
 public class CategoriaEjercicio {
-    private int codCategoria;
+    private int idCategoriaEjercicio;
     private String nombreCategoria;
-    
-   
     private List<Ejercicio> ejercicios;
-
   
     public CategoriaEjercicio() {
     }
 
 
     public CategoriaEjercicio(int codCategoria, String nombreCategoria, List<Ejercicio> ejercicios) {
-        this.codCategoria = codCategoria;
+        this.idCategoriaEjercicio = codCategoria;
         this.nombreCategoria = nombreCategoria;
         this.ejercicios = ejercicios;
     }
 
   
     public int getCodCategoria() {
-        return codCategoria;
+        return idCategoriaEjercicio;
     }
 
     public void setCodCategoria(int codCategoria) {
-        this.codCategoria = codCategoria;
+        this.idCategoriaEjercicio = codCategoria;
     }
 
     public String getNombreCategoria() {
