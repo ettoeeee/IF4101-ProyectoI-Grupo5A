@@ -3,7 +3,7 @@ package com.bulkgym.domain;
 import java.util.List;
 
 public class Ejercicio {
-	
+	//Atributos
 	private int idEjercicio;
 	private List<Rutina> rutina;
 	private List<CategoriaEjercicio> categoriaEjercicio;
