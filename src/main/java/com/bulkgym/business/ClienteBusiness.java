@@ -1,83 +1,37 @@
 package com.bulkgym.business;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.bulkgym.domain.Cliente;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.bulkgym.data.ClienteData;
+import com.bulkgym.domain.Cliente;
+import com.bulkgym.dto.ClienteDTO;
+
+@Service
 public class ClienteBusiness {
 
-	
-	private List<Cliente> clientes = new ArrayList<>();
+    @Autowired
+    private ClienteData clienteData;
 
-	
-	/*
-    public void agregarCliente(Cliente cliente) {
-        clientes.add(cliente);
-        System.out.println("Cliente agregado: " + cliente.getNombre());
+    public void guardarCliente(Cliente cliente) {
+        clienteData.guardarCliente(cliente);
     }
-    
-    */
-	
-	//Agregar un nuevo cliente
-	public void agregarCliente(Cliente cliente) {
-	    boolean existe = false;
-	    System.out.println("Intentando agregar cliente con ID: " + cliente.getIdCliente() + ", nombre: " + cliente.getNombre());
-	    for (int i = 0; i < clientes.size(); i++) {
-	        System.out.println("Cliente existente en la lista (ID): " + clientes.get(i).getIdCliente());
-	        if (clientes.get(i).getIdCliente() == cliente.getIdCliente()) {
-	            existe = true;
-	            break;
-	        }
-	    }
-	    if (!existe) {
-	        clientes.add(cliente);
-	        System.out.println("Cliente agregado manualmente: " + cliente.getNombre() + ". Tamaño de la lista ahora: " + clientes.size());
-	    } else {
-	        System.out.println("Ya existe un cliente con ID: " + cliente.getIdCliente() + ". No se agregó.");
-	    }
-	}
 
-
-    //Obtener todos los clientes
     public List<Cliente> obtenerTodosLosClientes() {
-        return clientes;
+        return clienteData.obtenerTodosLosClientes();
     }
 
-    // Obtener cliente por ID
     public Cliente obtenerClientePorId(int idCliente) {
-        for (int i = 0; i < clientes.size(); i++) {
-            Cliente c = clientes.get(i);
-            if (c.getIdCliente() == idCliente) {
-                return c;
-            }
-        }
-        return null; // No encontrado
+        return clienteData.buscarPorId(idCliente);
     }
 
-    // Actualizar cliente 
-    public boolean actualizarCliente(Cliente clienteActualizado) {
-        for (int i = 0; i < clientes.size(); i++) {
-            Cliente c = clientes.get(i);
-            if (c.getIdCliente() == clienteActualizado.getIdCliente()) {
-                clientes.set(i, clienteActualizado);
-                System.out.println("Cliente actualizado: " + clienteActualizado.getNombre());
-                return true;
-            }
-        }
-        return false; // No encontrado
+    public boolean actualizarCliente(ClienteDTO clienteDTO) {
+        return clienteData.actualizarCliente(clienteDTO);
     }
 
-    //Eliminar cliente por ID 
     public boolean eliminarCliente(int idCliente) {
-        for (int i = 0; i < clientes.size(); i++) {
-            Cliente c = clientes.get(i);
-            if (c.getIdCliente() == idCliente) {
-                clientes.remove(i);
-                System.out.println("Cliente eliminado con ID: " + idCliente);
-                return true;
-            }
-        }
-        return false; // No encontrado
+        return clienteData.eliminarCliente(idCliente);
     }
 }
