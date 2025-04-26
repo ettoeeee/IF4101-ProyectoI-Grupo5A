@@ -39,9 +39,8 @@ public class ClienteRestController {
         return ResponseEntity.ok(clientes);
     }
 
-    // 🔥 4. ELIMINAR (igual, no cambia)
     @DeleteMapping("/{id}")
-    public ResponseEntity<RespuestaDTO> eliminarCliente(@PathVariable int id) {
+    public ResponseEntity<RespuestaDTO> eliminarCliente(@PathVariable("id") int id) {
         boolean eliminado = clienteData.eliminarCliente(id);
         if (eliminado) {
             return ResponseEntity.ok(new RespuestaDTO("Cliente eliminado con éxito."));
@@ -50,17 +49,17 @@ public class ClienteRestController {
         }
     }
 
- // 🔥 5. ACTUALIZAR (Endpoint corregido)
- @PutMapping("/{id}")
- public ResponseEntity<RespuestaDTO> actualizarCliente(@PathVariable int id, @RequestBody ClienteDTO clienteDto) {
-	    clienteDto.setIdPersona(id); // se asegura del ID
-	    boolean actualizado = clienteData.actualizarCliente(clienteDto);
-	    if (actualizado) {
-	        return ResponseEntity.ok(new RespuestaDTO("Cliente actualizado con éxito."));
-	    } else {
-	        return ResponseEntity.status(404).body(new RespuestaDTO("No se pudo actualizar el cliente."));
-	    }
-	}
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RespuestaDTO> actualizarCliente(@PathVariable("id") int id, @RequestBody ClienteDTO clienteDto) {
+        clienteDto.setIdPersona(id);
+        boolean actualizado = clienteData.actualizarCliente(clienteDto);
+        if (actualizado) {
+            return ResponseEntity.ok(new RespuestaDTO("Cliente actualizado con éxito."));
+        } else {
+            return ResponseEntity.status(404).body(new RespuestaDTO("No se pudo actualizar el cliente."));
+        }
+    }
 
 
     // 🔥 6. Función privada para mapear de DTO a Cliente
@@ -79,5 +78,11 @@ public class ClienteRestController {
         cliente.setTelContactoEmergencia(dto.getTelContactoEmergencia());
         cliente.setActivo(dto.isActivo());
         return cliente;
+    }
+    
+    // 🔥 Manejo de error bonito
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<RespuestaDTO> manejarIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(new RespuestaDTO(ex.getMessage()));
     }
 }

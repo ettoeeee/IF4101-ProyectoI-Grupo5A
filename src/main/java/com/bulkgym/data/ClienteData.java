@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.dao.EmptyResultDataAccessException;  
 import com.bulkgym.domain.Cliente;
 import com.bulkgym.dto.ClienteDTO;
 
@@ -35,6 +35,17 @@ public class ClienteData {
 	public void guardarCliente(Cliente cliente) {
 	    if (cliente.getFechaNacimiento() == null) {
 	        throw new IllegalArgumentException("La fecha de nacimiento es obligatoria.");
+	    }
+	    
+	    // 🔥 1. Verificar si ya existe la cédula en Persona
+	    Integer count = jdbcTemplate.queryForObject(
+	        "SELECT COUNT(*) FROM Persona WHERE id_persona = ?", 
+	        Integer.class, 
+	        cliente.getIdPersona()
+	    );
+
+	    if (count != null && count > 0) {
+	        throw new IllegalArgumentException("Ya existe una persona registrada con esta cédula (idPersona).");
 	    }
 
 	    String sqlPersona = """
@@ -88,21 +99,29 @@ public class ClienteData {
 
 	@Transactional
 	public boolean eliminarCliente(int idCliente) {
-	    // 1. Obtener el ID de persona relacionado
-	    Integer idPersona = jdbcTemplate.queryForObject(
-	        "SELECT id_persona FROM Cliente WHERE id_cliente = ?",
-	        Integer.class,
-	        idCliente
-	    );
+	    try {
+	        Integer idPersona = jdbcTemplate.queryForObject(
+	            "SELECT id_persona FROM Cliente WHERE id_cliente = ?",
+	            Integer.class,
+	            idCliente
+	        );
 
-	    // 2. Eliminar de Cliente
-	    int filasCliente = jdbcTemplate.update("DELETE FROM Cliente WHERE id_cliente = ?", idCliente);
+	        int filasCliente = jdbcTemplate.update(
+	            "DELETE FROM Cliente WHERE id_cliente = ?", idCliente
+	        );
 
-	    // 3. Eliminar de Persona
-	    int filasPersona = jdbcTemplate.update("DELETE FROM Persona WHERE id_persona = ?", idPersona);
+	        jdbcTemplate.update(
+	            "DELETE FROM Persona WHERE id_persona = ?", idPersona
+	        );
 
-	    return filasCliente > 0 && filasPersona > 0;
+	        return filasCliente > 0;
+
+	    } catch (EmptyResultDataAccessException e) {
+	        return false;
+	    }
 	}
+
+
 
 	
 	@Transactional
