@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/instructores")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class InstructorRestController {
 
     @Autowired
