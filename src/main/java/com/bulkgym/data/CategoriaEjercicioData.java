@@ -18,7 +18,7 @@ public class CategoriaEjercicioData {
     private EjercicioData ejercicioData;
 
     public List<CategoriaEjercicio> buscarCategoriaPorId(int idCategoria) {
-        String sql = "SELECT * FROM CategoriaEjercicio WHERE codCategoria = ?";
+        String sql = "SELECT * FROM CategoriaEjercicio WHERE id_categoria = ?";
         return jdbcTemplate.query(sql, new CategoriaExtractor(), idCategoria);
     }
     
@@ -27,35 +27,34 @@ public class CategoriaEjercicioData {
         return jdbcTemplate.query(sql, new CategoriaExtractor());
     }
 
-    public boolean eliminarCategoria(CategoriaEjercicio categoria) {
+    public boolean eliminarCategoriaPorId(int id) {
         try {
-            // 1. Eliminar ejercicios asociados
-            String eliminarEjerciciosSQL = "DELETE FROM Ejercicio WHERE codCategoria = ?";
-            jdbcTemplate.update(eliminarEjerciciosSQL, categoria.getCodCategoria());
+            String eliminarEjerciciosSQL = "DELETE FROM Ejercicio WHERE id_categoria = ?";
+            jdbcTemplate.update(eliminarEjerciciosSQL, id); // Eliminar los ejercicios asociados
+            
+            String eliminarCategoriaSQL = "DELETE FROM CategoriaEjercicio WHERE id_categoria = ?";
+            int rowsAffected = jdbcTemplate.update(eliminarCategoriaSQL, id); // Eliminar la categoría
 
-            // 2. Eliminar categoría
-            String eliminarCategoriaSQL = "DELETE FROM CategoriaEjercicio WHERE codCategoria = ?";
-            jdbcTemplate.update(eliminarCategoriaSQL, categoria.getCodCategoria());
-
-            return true;
+            return rowsAffected > 0; // Si se eliminaron filas, la categoría fue eliminada correctamente
         } catch (Exception e) {
             return false;
         }
     }
+
 	
     public CategoriaEjercicio modificarCategoria(int idCategoria) {
-        String sql = "SELECT * FROM CategoriaEjercicio WHERE codCategoria = ?";
+        String sql = "SELECT * FROM CategoriaEjercicio WHERE id_categoria = ?";
         
         return jdbcTemplate.queryForObject(sql, new Object[]{idCategoria}, (rs, rowNum) -> {
             CategoriaEjercicio categoria = new CategoriaEjercicio();
-            categoria.setCodCategoria(rs.getInt("codCategoria"));
-            categoria.setNombreCategoria(rs.getString("nombreCategoria"));
+            categoria.setCodCategoria(rs.getInt("id_categoria"));
+            categoria.setNombreCategoria(rs.getString("nombre_categoria"));
             return categoria;
         });
     }
     
     public void insertarCategoria(CategoriaEjercicio categoriaEjercicio) {
-        String sql = "INSERT INTO CategoriaEjercicio (nombreCategoria) VALUES (?)";
+        String sql = "INSERT INTO CategoriaEjercicio (nombre_categoria) VALUES (?)";
         jdbcTemplate.update(sql, categoriaEjercicio.getNombreCategoria());
     }
 

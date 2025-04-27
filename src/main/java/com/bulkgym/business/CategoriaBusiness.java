@@ -12,16 +12,22 @@ import com.bulkgym.domain.CategoriaEjercicio;
 @Service
 public class CategoriaBusiness {
 
-
+	@Autowired
     private CategoriaEjercicioData categoriaData;
+    
+    public List<CategoriaEjercicio> obtenerTodasLasCategorias() {
+        return categoriaData.obtenerTodasLasCategorias();
+    }
 
     public List<CategoriaEjercicio> buscarCategoriaPorId(int idCategoria) {
         return categoriaData.buscarCategoriaPorId(idCategoria);
     }
 
-    public boolean eliminarCategoria(CategoriaEjercicio categoria) {
-        return categoriaData.eliminarCategoria(categoria);
+    public boolean eliminarCategoriaPorId(int id) {
+        // Lógica para eliminar la categoría por ID
+        return categoriaData.eliminarCategoriaPorId(id);
     }
+
 
     public CategoriaEjercicio modificarCategoria(int idCategoria) {
         return categoriaData.modificarCategoria(idCategoria);
