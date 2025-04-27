@@ -5,7 +5,9 @@ import com.bulkgym.domain.Cliente;
 import com.bulkgym.dto.ClienteDTO;
 import com.bulkgym.dto.RespuestaDTO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -79,5 +81,36 @@ public class ClienteRestController {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<RespuestaDTO> manejarIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(new RespuestaDTO(ex.getMessage()));
+    }
+    
+
+
+    @GetMapping("/cantidad")
+    public Map<String, Integer> contarClientes() {
+        int cantidad = clienteBusiness.contarClientes();
+        Map<String, Integer> respuesta = new HashMap<>();
+        respuesta.put("cantidadClientes", cantidad);
+        return respuesta;
+    }
+
+    @GetMapping("/cantidad/activos")
+    public Map<String, Integer> contarClientesActivos() {
+        int cantidad = clienteBusiness.contarClientesActivos();
+        Map<String, Integer> respuesta = new HashMap<>();
+        respuesta.put("clientesActivos", cantidad);
+        return respuesta;
+    }
+
+    @GetMapping("/cantidad/inactivos")
+    public Map<String, Integer> contarClientesInactivos() {
+        int cantidad = clienteBusiness.contarClientesInactivos();
+        Map<String, Integer> respuesta = new HashMap<>();
+        respuesta.put("clientesInactivos", cantidad);
+        return respuesta;
+    }
+
+    @GetMapping("/recientes")
+    public List<Cliente> obtenerClientesRecientes() {
+        return clienteBusiness.obtenerClientesRecientes();
     }
 }

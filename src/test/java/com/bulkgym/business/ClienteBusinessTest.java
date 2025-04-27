@@ -1,202 +1,144 @@
 package com.bulkgym.business;
 
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.bulkgym.domain.Cliente;
+import com.bulkgym.dto.ClienteDTO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.bulkgym.domain.Cliente;
-
+@SpringBootTest
 public class ClienteBusinessTest {
 
-<<<<<<< HEAD
-    /*private ClienteBusiness clienteBusiness;
-
-=======
+    @Autowired
     private ClienteBusiness clienteBusiness;
-/*
->>>>>>> 0f3687135718ad89e421fb2a93c19959abd1e42c
-    @BeforeEach
-    public void setUp() {
-        clienteBusiness = new ClienteBusiness();
-    }
 
-    private Cliente crearCliente(int id, String nombre) {
+    private Cliente crearCliente(int idPersona, String nombre) {
         Cliente c = new Cliente();
-        c.setIdCliente(id);
+        c.setIdPersona(idPersona);
         c.setNombre(nombre);
-        c.setActivo(true);
-        c.setIdPersona(id);
         c.setApellidos("Apellido");
-        c.setCorreoElectronico("correo@test.com");
-        c.setFechaNacimiento(Date.valueOf("2000-01-01")); // Ejemplo para el 1 de enero de 2000        c.setImagenRuta("ruta.png");
-        c.setTelefono("123456789");
+        c.setFechaNacimiento(Date.valueOf("2000-01-01"));
         c.setSexo('M');
+        c.setTelefono("123456789");
+        c.setCorreoElectronico("correo@test.com");
+        c.setImagenRuta("ruta.png");
+        c.setDireccion("Dirección prueba");
+        c.setNombreContactoEmergencia("Contacto Emergencia");
+        c.setTelContactoEmergencia("88888888");
+        c.setActivo(true);
         return c;
     }
 
-    // ----- Pruebas para agregarCliente -----
+    private ClienteDTO crearClienteDTODesdeCliente(Cliente cliente) {
+        ClienteDTO dto = new ClienteDTO();
+        dto.setIdPersona(cliente.getIdPersona());
+        dto.setNombre(cliente.getNombre());
+        dto.setApellidos(cliente.getApellidos());
+        dto.setFechaNacimiento(cliente.getFechaNacimiento());
+        dto.setSexo(cliente.getSexo());
+        dto.setTelefono(cliente.getTelefono());
+        dto.setCorreoElectronico(cliente.getCorreoElectronico());
+        dto.setImagenRuta(cliente.getImagenRuta());
+        dto.setDireccion(cliente.getDireccion());
+        dto.setNombreContactoEmergencia(cliente.getNombreContactoEmergencia());
+        dto.setTelContactoEmergencia(cliente.getTelContactoEmergencia());
+        dto.setActivo(cliente.isActivo());
+        return dto;
+    }
+
+    // ---- PRUEBAS PARA GUARDAR CLIENTES ----
 
     @Test
-    public void testAgregarClienteNuevo() {
-        Cliente c = crearCliente(1, "Jose Pablo");
-        clienteBusiness.agregarCliente(c);
-        assertEquals(1, clienteBusiness.obtenerTodosLosClientes().size());
+    public void testGuardarClienteNuevo() {
+        Cliente c = crearCliente(2001, "Jose Pablo");
+        clienteBusiness.guardarCliente(c);
+
+        List<Cliente> clientes = clienteBusiness.obtenerTodosLosClientes();
+        assertTrue(clientes.stream().anyMatch(cl -> cl.getNombre().equals("Jose Pablo")));
     }
 
     @Test
-    public void testAgregarClienteDuplicado() {
-        Cliente c1 = crearCliente(1, "Jose Pablo");
-        Cliente c2 = crearCliente(1, "Carlos");
-        clienteBusiness.agregarCliente(c1);
-        clienteBusiness.agregarCliente(c2);
-        assertEquals(1, clienteBusiness.obtenerTodosLosClientes().size());
+    public void testGuardarClienteDuplicado() {
+        Cliente c1 = crearCliente(2002, "Carlos");
+        clienteBusiness.guardarCliente(c1);
+
+        Cliente c2 = crearCliente(2002, "Carlos Duplicado");
+        Exception exception = assertThrows(Exception.class, () -> clienteBusiness.guardarCliente(c2));
+
+        assertTrue(exception.getMessage().contains("Ya existe una persona registrada"));
     }
 
     @Test
-    public void testAgregarVariosClientes() {
-        clienteBusiness.agregarCliente(crearCliente(1, "Jose Pablo"));
-        clienteBusiness.agregarCliente(crearCliente(2, "Carlos"));
-        clienteBusiness.agregarCliente(crearCliente(3, "Viviana"));
-        assertEquals(3, clienteBusiness.obtenerTodosLosClientes().size());
+    public void testGuardarVariosClientes() {
+        clienteBusiness.guardarCliente(crearCliente(2003, "Cliente A"));
+        clienteBusiness.guardarCliente(crearCliente(2004, "Cliente B"));
+        clienteBusiness.guardarCliente(crearCliente(2005, "Cliente C"));
+
+        List<Cliente> clientes = clienteBusiness.obtenerTodosLosClientes();
+        assertTrue(clientes.size() >= 3);
     }
 
-    @Test
-    public void testAgregarClienteConIdNegativo() {
-        Cliente c = crearCliente(-1, "Negativo");
-        clienteBusiness.agregarCliente(c);
-        assertEquals(1, clienteBusiness.obtenerTodosLosClientes().size());
-    }
-
-    @Test
-    public void testAgregarClienteConNombreVacio() {
-        Cliente c = crearCliente(5, "");
-        clienteBusiness.agregarCliente(c);
-        assertEquals(1, clienteBusiness.obtenerTodosLosClientes().size());
-    }
-
-    // ----- Pruebas para obtenerClientePorId -----
-
-    @Test
-    public void testObtenerClienteExistentePorId() {
-        Cliente c = crearCliente(1, "Jose Pablo");
-        clienteBusiness.agregarCliente(c);
-        assertNotNull(clienteBusiness.obtenerClientePorId(1));
-    }
-
-    @Test
-    public void testObtenerClienteInexistentePorId() {
-        assertNull(clienteBusiness.obtenerClientePorId(99));
-    }
-
-    @Test
-    public void testObtenerClientePorIdDespuesDeEliminar() {
-        Cliente c = crearCliente(1, "Jose Pablo");
-        clienteBusiness.agregarCliente(c);
-        clienteBusiness.eliminarCliente(1);
-        assertNull(clienteBusiness.obtenerClientePorId(1));
-    }
-
-    @Test
-    public void testObtenerClientePorIdNegativo() {
-        assertNull(clienteBusiness.obtenerClientePorId(-1));
-    }
-
-    @Test
-    public void testObtenerClientePorIdSinAgregarNinguno() {
-        assertNull(clienteBusiness.obtenerClientePorId(1));
-    }
-
-    // ----- Pruebas para actualizarCliente -----
+    // ---- PRUEBAS PARA ACTUALIZAR CLIENTES ----
 
     @Test
     public void testActualizarClienteExistente() {
-        Cliente c = crearCliente(1, "Jose Pablo");
-        clienteBusiness.agregarCliente(c);
+        Cliente c = crearCliente(2006, "Cliente Actualizar");
+        clienteBusiness.guardarCliente(c);
 
-        Cliente actualizado = crearCliente(1, "Jose Pablo Modificado exitosamente");
-        boolean actualizadoFlag = clienteBusiness.actualizarCliente(actualizado);
+        ClienteDTO dto = crearClienteDTODesdeCliente(c);
+        dto.setNombre("Cliente Actualizado Correctamente");
 
-        assertTrue(actualizadoFlag);
-        assertEquals("Jose Pablo Modificado exitosamente", clienteBusiness.obtenerClientePorId(1).getNombre());
+        boolean actualizado = clienteBusiness.actualizarCliente(dto);
+        assertTrue(actualizado);
     }
 
     @Test
     public void testActualizarClienteInexistente() {
-        Cliente c = crearCliente(1, "Mayra");
-        assertFalse(clienteBusiness.actualizarCliente(c));
+        ClienteDTO dto = new ClienteDTO();
+        dto.setIdPersona(9999); // id que no existe
+        dto.setNombre("No Existe");
+
+        boolean actualizado = clienteBusiness.actualizarCliente(dto);
+        assertFalse(actualizado);
     }
 
-    @Test
-    public void testActualizarClienteConIdNegativo() {
-        Cliente c = crearCliente(-1, "Eduardo");
-        assertFalse(clienteBusiness.actualizarCliente(c));
-    }
-
-    @Test
-    public void testActualizarClienteConMismoObjeto() {
-        Cliente c = crearCliente(1, "Juan");
-        clienteBusiness.agregarCliente(c);
-        assertTrue(clienteBusiness.actualizarCliente(c));
-    }
-
-    @Test
-    public void testActualizarClienteEnListaVacia() {
-        Cliente c = crearCliente(1, "Oscar");
-        assertFalse(clienteBusiness.actualizarCliente(c));
-    }
-
-    // ----- Pruebas para eliminarCliente -----
+    // ---- PRUEBAS PARA ELIMINAR CLIENTES ----
 
     @Test
     public void testEliminarClienteExistente() {
-        Cliente c = crearCliente(1, "Jose Pablo");
-        clienteBusiness.agregarCliente(c);
-        assertTrue(clienteBusiness.eliminarCliente(1));
-        assertEquals(0, clienteBusiness.obtenerTodosLosClientes().size());
+        Cliente c = crearCliente(2007, "Cliente Eliminar");
+        clienteBusiness.guardarCliente(c);
+
+        List<Cliente> clientes = clienteBusiness.obtenerTodosLosClientes();
+        int idCliente = clientes.get(clientes.size() - 1).getIdCliente();
+
+        boolean eliminado = clienteBusiness.eliminarCliente(idCliente);
+        assertTrue(eliminado);
     }
 
     @Test
     public void testEliminarClienteInexistente() {
-        assertFalse(clienteBusiness.eliminarCliente(10));
+        boolean eliminado = clienteBusiness.eliminarCliente(9999);
+        assertFalse(eliminado);
+    }
+
+    // ---- PRUEBAS PARA CONSULTAR CLIENTES ----
+
+    @Test
+    public void testObtenerTodosLosClientes() {
+        List<Cliente> clientes = clienteBusiness.obtenerTodosLosClientes();
+        assertNotNull(clientes);
     }
 
     @Test
-    public void testEliminarClienteDeListaVacia() {
-        assertFalse(clienteBusiness.eliminarCliente(1));
+    public void testContarClientes() {
+        int cantidad = clienteBusiness.contarClientes();
+        assertTrue(cantidad >= 0);
     }
-
-    @Test
-    public void testEliminarClienteDosVeces() {
-        Cliente c = crearCliente(1, "Juan");
-        clienteBusiness.agregarCliente(c);
-        clienteBusiness.eliminarCliente(1);
-        assertFalse(clienteBusiness.eliminarCliente(1));
-    }
-
-    @Test
-    public void testEliminarClienteConIdNegativo() {
-        assertFalse(clienteBusiness.eliminarCliente(-1));
-    }
-
-    // ----- Pruebas para obtenerTodosLosClientes -----
-
-    @Test
-    public void testObtenerTodosLosClientesVacia() {
-        List<Cliente> lista = clienteBusiness.obtenerTodosLosClientes();
-        assertTrue(lista.isEmpty());
-    }
-
-    @Test
-    public void testObtenerTodosLosClientesConDatos() {
-        clienteBusiness.agregarCliente(crearCliente(1, "A"));
-        clienteBusiness.agregarCliente(crearCliente(2, "B"));
-        List<Cliente> lista = clienteBusiness.obtenerTodosLosClientes();
-        assertEquals(2, lista.size());
-    }
-    */
 }

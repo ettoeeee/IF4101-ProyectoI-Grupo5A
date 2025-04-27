@@ -152,6 +152,32 @@ public class ClienteData {
 
 	    return result > 0;
 	}
+	 public List<Cliente> obtenerTodosLosClientesP() {
+	        String sql = "SELECT * FROM Cliente";
+	        return jdbcTemplate.query(sql, new ClienteExtractor());
+	    }
 
-	
+	    public int contarClientes() {
+	        String sql = "SELECT COUNT(*) FROM Cliente";
+	        return jdbcTemplate.queryForObject(sql, Integer.class);
+	    }
+
+	    public List<Cliente> obtenerClientesRecientes() {
+	        String sql = """
+	            SELECT TOP 5 *
+	            FROM Cliente
+	            ORDER BY id_cliente DESC
+	        """;
+	        return jdbcTemplate.query(sql, new ClienteExtractor());
+	    }
+
+	    public int contarClientesActivos() {
+	        String sql = "SELECT COUNT(*) FROM Cliente WHERE activo = 1";
+	        return jdbcTemplate.queryForObject(sql, Integer.class);
+	    }
+
+	    public int contarClientesInactivos() {
+	        String sql = "SELECT COUNT(*) FROM Cliente WHERE activo = 0";
+	        return jdbcTemplate.queryForObject(sql, Integer.class);
+	    }
 }// End of class [ClienteData].

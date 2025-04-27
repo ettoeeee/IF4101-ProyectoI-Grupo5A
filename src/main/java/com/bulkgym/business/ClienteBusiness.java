@@ -34,4 +34,24 @@ public class ClienteBusiness {
     public boolean eliminarCliente(int idCliente) {
         return clienteData.eliminarCliente(idCliente);
     }
+    
+    public List<Cliente> obtenerTodosLosClientesP() {
+        return clienteData.obtenerTodosLosClientes();
+    }
+
+    public int contarClientes() {
+        return clienteData.contarClientes();
+    }
+
+    public List<Cliente> obtenerClientesRecientes() {
+        return clienteData.obtenerClientesRecientes();
+    }
+
+    public int contarClientesActivos() {
+        return clienteData.contarClientesActivos();
+    }
+
+    public int contarClientesInactivos() {
+        return clienteData.contarClientesInactivos();
+    }
 }
