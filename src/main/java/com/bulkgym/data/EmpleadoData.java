@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bulkgym.domain.Empleado;
 import com.bulkgym.dto.EmpleadoDTO;
 
+@Repository
 public class EmpleadoData {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
