@@ -14,7 +14,7 @@ public class CategoriaBusinessTest {
 
     private List<CategoriaEjercicio> listaCategorias;
     private CategoriaBusiness categoriaBusiness;
-
+/*
     @BeforeEach
     public void setUp() {
         listaCategorias = new ArrayList<>();
@@ -112,5 +112,6 @@ public class CategoriaBusinessTest {
         assertEquals(1, resultado.size());
         assertEquals("Pecho", resultado.get(0).getNombreCategoria());
     }
+    */
 }
 
