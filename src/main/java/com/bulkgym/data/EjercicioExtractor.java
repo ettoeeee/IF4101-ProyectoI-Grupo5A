@@ -26,21 +26,11 @@ public class EjercicioExtractor implements ResultSetExtractor<List<Ejercicio>> {
 				ejercicio = new Ejercicio();
 				ejercicio.setIdEjercicio(id);
 				ejercicio.setNombreEjercicio(rs.getString("nombre_ejercicio"));
-				ejercicio.setEquipo(rs.getString("equipo"));
-				ejercicio.setSeries(rs.getInt("series"));
-				ejercicio.setRepeticiones(rs.getInt("repeticiones"));
-
-				// Asignar Rutina
-				List<Rutina> rutinas = new ArrayList<>();
-				Rutina rutina = new Rutina();
-				rutina.setIdRutina(rs.getInt("id_rutina"));
-				rutinas.add(rutina);
-				ejercicio.setRutina(rutinas);
 
 				// Asignar CategoriaEjercicio
 				List<CategoriaEjercicio> categorias = new ArrayList<>();
 				CategoriaEjercicio categoria = new CategoriaEjercicio();
-				categoria.setNombreCategoria(rs.getString("categoria")); // suponiendo que el atributo se llama así
+				categoria.setNombreCategoria(rs.getString("nombre_categoria")); // suponiendo que el atributo se llama así
 				categorias.add(categoria);
 				ejercicio.setCategoriaEjercicio(categorias);
 

@@ -18,17 +18,19 @@ public class EjercicioData {
 
     @Transactional(readOnly = true)
     public List<Ejercicio> buscarTodosEjercicios() {
-        String sqlSelect = "SELECT * FROM EJERCICIO";
+        // Modificado para reflejar la nueva estructura de la tabla Ejercicio
+        String sqlSelect = "SELECT e.id_ejercicio, e.nombre_ejercicio, c.nombre_categoria " +
+                           "FROM Ejercicio e " +
+                           "JOIN CategoriaEjercicio c ON e.id_categoria = c.id_categoria";
         return jdbcTemplate.query(sqlSelect, new EjercicioExtractor());
     }
 
     @Transactional(readOnly = true)
     public List<Ejercicio> findExercisesByName(String nombre) {
-        String sqlSelect = "SELECT e.id_ejercicio, e.nombre_ejercicio, e.equipo, e.series, e.repeticiones, " +
-                           "c.nombre_categoria AS categoria, r.id_rutina " +
+        // Consulta modificada para reflejar la nueva estructura
+        String sqlSelect = "SELECT e.id_ejercicio, e.nombre_ejercicio, c.nombre_categoria " +
                            "FROM Ejercicio e " +
-                           "JOIN CategoriaEjercicio c ON e.cod_categoria = c.cod_categoria " +
-                           "JOIN Rutina r ON e.id_rutina = r.id_rutina " +
+                           "JOIN CategoriaEjercicio c ON e.id_categoria = c.id_categoria " +
                            "WHERE e.nombre_ejercicio LIKE ? OR c.nombre_categoria LIKE ?";
 
         return jdbcTemplate.query(sqlSelect, new EjercicioExtractor(), "%" + nombre + "%", "%" + nombre + "%");
@@ -36,17 +38,17 @@ public class EjercicioData {
 
     @Transactional(readOnly = true)
     public Ejercicio findEjercicioById(int codEjercicio) {
-        String sql = "SELECT e.id_ejercicio, e.nombre_ejercicio, e.equipo, e.series, e.repeticiones, " +
-                     "c.nombre_categoria AS categoria, r.id_rutina " +
+        // Ajustada la consulta a la nueva estructura de Ejercicio sin la columna de Rutina
+        String sql = "SELECT e.id_ejercicio, e.nombre_ejercicio, c.nombre_categoria " +
                      "FROM Ejercicio e " +
-                     "JOIN CategoriaEjercicio c ON e.cod_categoria = c.cod_categoria " +
-                     "JOIN Rutina r ON e.id_rutina = r.id_rutina " +
+                     "JOIN CategoriaEjercicio c ON e.id_categoria = c.id_categoria " +
                      "WHERE e.id_ejercicio = ?";
 
         List<Ejercicio> ejercicios = jdbcTemplate.query(sql, new EjercicioExtractor(), codEjercicio);
         return ejercicios.isEmpty() ? null : ejercicios.get(0);
     }
 
+    /*
     @Transactional
     public void modificarEjercicio(int codEjercicio) {
         // 1. Obtener el ejercicio actual
@@ -55,46 +57,45 @@ public class EjercicioData {
         if (ejercicioExistente != null) {
             // 2. Simulación de la actualización con los datos existentes (en un escenario real, esto vendría de la vista)
             String nuevoNombre = ejercicioExistente.getNombreEjercicio();
-            String nuevoEquipo = ejercicioExistente.getEquipo();
-            int nuevasSeries = ejercicioExistente.getSeries();
-            int nuevasRepeticiones = ejercicioExistente.getRepeticiones();
-
-            // Suponiendo que solo se actualiza la primera categoría de la lista
             int nuevaCategoria = ejercicioExistente.getCategoriaEjercicio() != null &&
                                  !ejercicioExistente.getCategoriaEjercicio().isEmpty()
-                                 ? ejercicioExistente.getCategoriaEjercicio().get(0).getCodCategoria()
-                                 : 0;
+                                 ? ejercicioExistente.getCategoriaEjercicio().get(0).getCodCategoria() : 0;
 
             // 3. Ejecutar el UPDATE (ajusta los nombres de columnas según tu base de datos)
             String sqlUpdate = "UPDATE Ejercicio " +
-                               "SET nombre_ejercicio = ?, equipo = ?, series = ?, repeticiones = ?, cod_categoria = ? " +
-                               "WHERE cod_ejercicio = ?";
+                               "SET nombre_ejercicio = ?, id_categoria = ? " +
+                               "WHERE id_ejercicio = ?";
 
             jdbcTemplate.update(sqlUpdate,
                 nuevoNombre,
-                nuevoEquipo,
-                nuevasSeries,
-                nuevasRepeticiones,
                 nuevaCategoria,
                 codEjercicio
             );
         }
     }
+    */
+    
+    @Transactional
+    public void modificarEjercicio(int codEjercicio, String nuevoNombre) {
+    	String sqlUpdate = "UPDATE Ejercicio SET nombre_ejercicio = ? WHERE id_ejercicio = ?";
+    	jdbcTemplate.update(sqlUpdate, nuevoNombre, codEjercicio);
+
+    }
 
 
     @Transactional
     public void insertarEjercicio(Ejercicio ejercicio) {
-        String sqlInsert = "INSERT INTO Ejercicio (nombre_ejercicio, equipo, series, repeticiones, cod_categoria, id_rutina) " +
-                           "VALUES (?, ?, ?, ?, ?, ?)";
+        // Obtenemos el ID de la categoría desde el objeto Ejercicio
+        int idCategoriaSeleccionada = ejercicio.getCategoriaEjercicio() != null &&
+                                      !ejercicio.getCategoriaEjercicio().isEmpty()
+                                      ? ejercicio.getCategoriaEjercicio().get(0).getCodCategoria() : 0;
 
+        String sqlInsert = "INSERT INTO Ejercicio (nombre_ejercicio, id_categoria) VALUES (?, ?)";
         jdbcTemplate.update(sqlInsert,
                 ejercicio.getNombreEjercicio(),
-                ejercicio.getEquipo(),
-                ejercicio.getSeries(),
-                ejercicio.getRepeticiones(),
-                ejercicio.getCategoriaEjercicio().get(0).getCodCategoria(),
-                ejercicio.getRutina().get(0).getIdRutina());
+                idCategoriaSeleccionada);  // Usamos el ID de la categoría directamente desde el objeto Ejercicio
     }
+
 
     @Transactional
     public boolean eliminarEjercicio(int codEjercicio) {
@@ -108,4 +109,5 @@ public class EjercicioData {
 
         return false;
     }
+
 }

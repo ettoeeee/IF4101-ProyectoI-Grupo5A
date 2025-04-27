@@ -21,6 +21,11 @@ public class CategoriaEjercicioData {
         String sql = "SELECT * FROM CategoriaEjercicio WHERE codCategoria = ?";
         return jdbcTemplate.query(sql, new CategoriaExtractor(), idCategoria);
     }
+    
+    public List<CategoriaEjercicio> obtenerTodasLasCategorias() {
+        String sql = "SELECT * FROM CategoriaEjercicio";
+        return jdbcTemplate.query(sql, new CategoriaExtractor());
+    }
 
     public boolean eliminarCategoria(CategoriaEjercicio categoria) {
         try {
