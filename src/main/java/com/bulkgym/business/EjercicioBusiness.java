@@ -29,10 +29,10 @@ public class EjercicioBusiness {
         return ejercicioData.eliminarEjercicio(codEjercicio);
     }
 
-    // Modificar un ejercicio por ID (actualmente simulado en EjercicioData)
-    public void modificarEjercicioPorId(int codEjercicio) {
-        ejercicioData.modificarEjercicio(codEjercicio);
+    public void modificarEjercicioPorId(int codEjercicio, String nuevoNombre) {
+        ejercicioData.modificarEjercicio(codEjercicio, nuevoNombre);
     }
+
 	
 
 }

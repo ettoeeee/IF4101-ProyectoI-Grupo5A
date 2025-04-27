@@ -21,7 +21,7 @@ public class CategoriaExtractor implements ResultSetExtractor<List<CategoriaEjer
 		Map<Integer, CategoriaEjercicio> map = new HashMap<Integer, CategoriaEjercicio>();
 		CategoriaEjercicio ejercicio = null;
 		while(rs.next()) {
-			Integer id = rs.getInt("cod_categoria");
+			Integer id = rs.getInt("id_categoria");
 			ejercicio = map.get(id);
 			if (ejercicio == null) {
 				ejercicio = new CategoriaEjercicio();
