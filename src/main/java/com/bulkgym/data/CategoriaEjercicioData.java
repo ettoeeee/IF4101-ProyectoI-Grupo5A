@@ -28,7 +28,7 @@ public class CategoriaEjercicioData {
     @Transactional
     public void guardar(CategoriaEjercicio categoria) {
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
-                .withCatalogName("dbo")
+        		.withSchemaName("dbo")
                 .withProcedureName("InsertCategoriaEjercicio")
                 .declareParameters(
                     new SqlParameter("nombre_categoria", Types.VARCHAR),
