@@ -13,13 +13,12 @@ import com.bulkgym.domain.Cliente;
 
 public class ClienteBusinessTest {
 
-<<<<<<< HEAD
+
     /*private ClienteBusiness clienteBusiness;
 
-=======
     private ClienteBusiness clienteBusiness;
 /*
->>>>>>> 0f3687135718ad89e421fb2a93c19959abd1e42c
+
     @BeforeEach
     public void setUp() {
         clienteBusiness = new ClienteBusiness();
