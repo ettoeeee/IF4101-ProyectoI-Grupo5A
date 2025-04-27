@@ -88,7 +88,7 @@ public class EjercicioData {
         // Obtenemos el ID de la categoría desde el objeto Ejercicio
         int idCategoriaSeleccionada = ejercicio.getCategoriaEjercicio() != null &&
                                       !ejercicio.getCategoriaEjercicio().isEmpty()
-                                      ? ejercicio.getCategoriaEjercicio().get(0).getCodCategoria() : 0;
+                                      ? ejercicio.getCategoriaEjercicio().get(0).getIdCategoriaEjercicio() : 0;
 
         String sqlInsert = "INSERT INTO Ejercicio (nombre_ejercicio, id_categoria) VALUES (?, ?)";
         jdbcTemplate.update(sqlInsert,
