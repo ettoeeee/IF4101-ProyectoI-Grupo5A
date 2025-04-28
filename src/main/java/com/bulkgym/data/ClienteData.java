@@ -164,12 +164,18 @@ public class ClienteData {
 
 	    public List<Cliente> obtenerClientesRecientes() {
 	        String sql = """
-	            SELECT TOP 5 *
-	            FROM Cliente
-	            ORDER BY id_cliente DESC
+	            SELECT TOP 5 
+	                c.id_cliente, c.activo,
+	                p.id_persona, p.nombre, p.apellidos, p.fecha_nacimiento,
+	                p.sexo, p.telefono, p.correo_electronico, p.imagen,
+	                p.direccion, p.nombre_contacto_emergencia, p.tel_contacto_emergencia
+	            FROM Cliente c
+	            JOIN Persona p ON c.id_persona = p.id_persona
+	            ORDER BY c.id_cliente DESC
 	        """;
 	        return jdbcTemplate.query(sql, new ClienteExtractor());
 	    }
+
 
 	    public int contarClientesActivos() {
 	        String sql = "SELECT COUNT(*) FROM Cliente WHERE activo = 1";
