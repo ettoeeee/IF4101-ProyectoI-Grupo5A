@@ -7,14 +7,16 @@ public class Ejercicio {
 	private int idEjercicio;
 	private String nombreEjercicio;
 	private List<CategoriaEjercicio> categoriaEjercicio;
+	private List<FotografiaEjercicio> fotografiasEjercicios;
 	
 	public Ejercicio() {}
 
-	public Ejercicio(int idEjercicio, String nombreEjercicio, List<CategoriaEjercicio> categoriaEjercicio) {
+	public Ejercicio(int idEjercicio, String nombreEjercicio, List<CategoriaEjercicio> categoriaEjercicio, List<FotografiaEjercicio> fotografiasEjercicios) {
 		super();
 		this.idEjercicio = idEjercicio;
 		this.nombreEjercicio = nombreEjercicio;
 		this.categoriaEjercicio = categoriaEjercicio;
+		this.fotografiasEjercicios = fotografiasEjercicios;
 	}
 
 	public int getIdEjercicio() {
@@ -41,6 +43,12 @@ public class Ejercicio {
 		this.categoriaEjercicio = categoriaEjercicio;
 	}
 	
-	
+	public List<FotografiaEjercicio> getFotografiasEjercicio() {
+        return fotografiasEjercicios;
+    }
+
+    public void setFotografiasEjercicio(List<FotografiaEjercicio> fotografiasEjercicios) {
+        this.fotografiasEjercicios = fotografiasEjercicios;
+    }
 	
 }

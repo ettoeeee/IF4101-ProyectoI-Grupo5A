@@ -1,62 +1,61 @@
 package com.bulkgym.data;
 
+import java.sql.Types;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bulkgym.domain.CategoriaEjercicio;
 
 @Repository
 public class CategoriaEjercicioData {
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private EjercicioData ejercicioData;
+    private JdbcTemplate jdbcTemplate;
 
-    public List<CategoriaEjercicio> buscarCategoriaPorId(int idCategoria) {
-        String sql = "SELECT * FROM CategoriaEjercicio WHERE id_categoria = ?";
-        return jdbcTemplate.query(sql, new CategoriaExtractor(), idCategoria);
-    }
-    
-    public List<CategoriaEjercicio> obtenerTodasLasCategorias() {
-        String sql = "SELECT * FROM CategoriaEjercicio";
+    public List<CategoriaEjercicio> findAll() {
+        String sql = "SELECT id_categoria, nombre_categoria FROM CategoriaEjercicio";
         return jdbcTemplate.query(sql, new CategoriaExtractor());
     }
 
-    public boolean eliminarCategoriaPorId(int id) {
-        try {
-            String eliminarEjerciciosSQL = "DELETE FROM Ejercicio WHERE id_categoria = ?";
-            jdbcTemplate.update(eliminarEjerciciosSQL, id); // Eliminar los ejercicios asociados
-            
-            String eliminarCategoriaSQL = "DELETE FROM CategoriaEjercicio WHERE id_categoria = ?";
-            int rowsAffected = jdbcTemplate.update(eliminarCategoriaSQL, id); // Eliminar la categoría
+    @Transactional
+    public void guardar(CategoriaEjercicio categoria) {
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
+        		.withSchemaName("dbo")
+                .withProcedureName("InsertCategoriaEjercicio")
+                .declareParameters(
+                    new SqlParameter("nombre_categoria", Types.VARCHAR),
+                    new SqlOutParameter("id_categoria", Types.INTEGER)
+                );
 
-            return rowsAffected > 0; // Si se eliminaron filas, la categoría fue eliminada correctamente
-        } catch (Exception e) {
-            return false;
-        }
+        Map<String, Object> params = Map.of(
+            "nombre_categoria", categoria.getNombreCategoria()
+        );
+
+        Map<String, Object> result = jdbcCall.execute(params);
+        categoria.setIdCategoriaEjercicio((Integer) result.get("id_categoria"));
     }
 
-	
-    public CategoriaEjercicio modificarCategoria(int idCategoria) {
-        String sql = "SELECT * FROM CategoriaEjercicio WHERE id_categoria = ?";
-        
-        return jdbcTemplate.queryForObject(sql, new Object[]{idCategoria}, (rs, rowNum) -> {
-            CategoriaEjercicio categoria = new CategoriaEjercicio();
-            categoria.setCodCategoria(rs.getInt("id_categoria"));
-            categoria.setNombreCategoria(rs.getString("nombre_categoria"));
-            return categoria;
-        });
-    }
-    
-    public void insertarCategoria(CategoriaEjercicio categoriaEjercicio) {
-        String sql = "INSERT INTO CategoriaEjercicio (nombre_categoria) VALUES (?)";
-        jdbcTemplate.update(sql, categoriaEjercicio.getNombreCategoria());
+    public void update(CategoriaEjercicio categoria) {
+        String sql = "UPDATE CategoriaEjercicio SET nombre_categoria = ? WHERE id_categoria = ?";
+        jdbcTemplate.update(sql, categoria.getNombreCategoria(), categoria.getIdCategoriaEjercicio());
     }
 
+    public void delete(int idCategoria) {
+        String sql = "DELETE FROM CategoriaEjercicio WHERE id_categoria = ?";
+        jdbcTemplate.update(sql, idCategoria);
+    }
 
+    public CategoriaEjercicio findById(int id) {
+        String sql = "SELECT id_categoria, nombre_categoria FROM CategoriaEjercicio WHERE id_categoria = ?";
+        List<CategoriaEjercicio> categorias = jdbcTemplate.query(sql, new CategoriaExtractor(), id);
+        return categorias.isEmpty() ? null : categorias.get(0);
+    }
 }
