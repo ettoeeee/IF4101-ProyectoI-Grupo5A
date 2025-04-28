@@ -71,4 +71,14 @@ public class EmpleadoRestController {
 		else return ResponseEntity.status(404).body(new RespuestaDTO("No se pudo actualizar el empleado."));
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<Empleado> obtenerEmpleadoPorId(@PathVariable int id) {
+	    Empleado e = empleadoBusiness.findById(id);
+	    return e != null
+	      ? ResponseEntity.ok(e)
+	      : ResponseEntity.notFound().build();
+	}
+
+
+	
 }//  End of class [EmpleadoRestController].
