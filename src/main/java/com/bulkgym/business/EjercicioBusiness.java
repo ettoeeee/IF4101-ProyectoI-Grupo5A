@@ -46,5 +46,14 @@ public class EjercicioBusiness {
         ejercicioData.update(ejercicio);
     }
 
+    
+    public int contarEjercicios() {
+        return ejercicioData.contarEjercicios();
+    }
+
+    public int contarCategorias() {
+        return ejercicioData.contarCategorias();
+    }
+
 
 }

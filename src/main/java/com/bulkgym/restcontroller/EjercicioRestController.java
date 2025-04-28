@@ -83,4 +83,23 @@ public class EjercicioRestController {
     public ResponseEntity<RespuestaDTO> manejarIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(new RespuestaDTO(ex.getMessage()));
     }
+    
+    //panel 
+    
+    @GetMapping("/cantidad")
+    public Map<String, Integer> contarEjercicios() {
+        int cantidad = ejercicioBusiness.contarEjercicios();
+        Map<String, Integer> respuesta = new HashMap<>();
+        respuesta.put("cantidadEjercicios", cantidad);
+        return respuesta;
+    }
+
+    @GetMapping("/categorias/cantidad")
+    public Map<String, Integer> contarCategorias() {
+        int cantidad = ejercicioBusiness.contarCategorias();
+        Map<String, Integer> respuesta = new HashMap<>();
+        respuesta.put("cantidadCategorias", cantidad);
+        return respuesta;
+    }
+
 }

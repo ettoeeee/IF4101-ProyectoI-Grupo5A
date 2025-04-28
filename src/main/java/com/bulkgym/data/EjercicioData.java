@@ -103,4 +103,18 @@ public class EjercicioData {
         List<Ejercicio> ejercicios = jdbcTemplate.query(sql, new EjercicioExtractor(), id);
         return ejercicios.isEmpty() ? null : ejercicios.get(0);
     }
+    
+    
+    @Transactional(readOnly = true)
+    public int contarEjercicios() {
+        String sql = "SELECT COUNT(*) FROM Ejercicio";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    @Transactional(readOnly = true)
+    public int contarCategorias() {
+        String sql = "SELECT COUNT(*) FROM CategoriaEjercicio";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
 }
