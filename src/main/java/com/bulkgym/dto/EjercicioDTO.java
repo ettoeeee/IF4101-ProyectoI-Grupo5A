@@ -1,7 +1,6 @@
 package com.bulkgym.dto;
 
 import java.util.List;
-
 import com.bulkgym.domain.Rutina;
 
 public class EjercicioDTO {
@@ -10,8 +9,9 @@ public class EjercicioDTO {
     private String equipo;
     private int series;
     private int repeticiones;
-    private int idCategoria;  // CAMBIO: ahora es solo un idCategoria
+    private int idCategoria; 
     private List<Rutina> rutina;
+    private String imagen; // 🔵 NUEVO campo para la imagen en base64
 
     // Getters y Setters
     public String getNombreEjercicio() {
@@ -60,5 +60,13 @@ public class EjercicioDTO {
 
     public void setRutina(List<Rutina> rutina) {
         this.rutina = rutina;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

@@ -30,8 +30,10 @@ public class SecurityConfig {
                     "/api/instructores/**",
                     "/api/categorias/**",
                     "/api/ejercicios/**",
+
                     "/api/empleados/**",
                     "/uploads/**"
+                    
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/trainer/**").hasRole("ENTRENADOR")
