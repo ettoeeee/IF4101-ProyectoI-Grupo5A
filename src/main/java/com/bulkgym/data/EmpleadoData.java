@@ -16,20 +16,35 @@ public class EmpleadoData {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	@Transactional (readOnly = true)
-	public Empleado findById (int idEmpleado) {
-		
-		String SQL = """
-			SELECT e.id_empleado, e.rol_empleado,
-				   p.id_persona, p.nombre, p.apellidos, p.fecha_nacimiento,
-	               p.sexo, p.telefono, p.correo_electronico, p.imagen
+	@Transactional(readOnly = true)
+	public Empleado findById(int idEmpleado) {
+	    String SQL = """
+	        SELECT 
+	          e.id_empleado,
+	          e.rol_empleado,
+	          p.id_persona,
+	          p.nombre,
+	          p.apellidos,
+	          p.fecha_nacimiento,
+	          p.sexo,
+	          p.telefono,
+	          p.correo_electronico,
+	          p.imagen,
+	          p.direccion,
+	          p.nombre_contacto_emergencia,
+	          p.tel_contacto_emergencia
 	        FROM Empleado e
-	        JOIN Persona p ON e.id_persona = p.id_persona
-	        WHERE c.id_cliente = ?
-		""";
-		
-		List<Empleado> list = jdbcTemplate.query(SQL, new EmpleadoExtractor(), idEmpleado);		
-		return list.isEmpty() ? null : list.get(0);
+	        JOIN Persona p 
+	          ON e.id_persona = p.id_persona
+	        WHERE e.id_empleado = ?
+	    """;
+
+	    List<Empleado> list = jdbcTemplate.query(
+	        SQL,
+	        new EmpleadoExtractor(),
+	        idEmpleado
+	    );
+	    return list.isEmpty() ? null : list.get(0);
 	}// End of method [findById].
 	
 	@Transactional
@@ -120,29 +135,40 @@ public class EmpleadoData {
 	
 	@Transactional
 	public boolean updateEmpleado(EmpleadoDTO empleado) {
-		if (empleado.getRolEmpleado() == null)
-			throw new IllegalArgumentException("Cada empleado DEBE tener un rol.");
-		
-		String SQL = """
-			UPDATE Persona
-	        SET nombre = ?, apellidos = ?, fecha_nacimiento = ?, sexo = ?, telefono = ?, correo_electronico = ?, imagen = ?, direccion = ?, nombre_contacto_emergencia = ?, tel_contacto_emergencia = ?
-	        WHERE id_persona = ?		
-	    """;
-		
-	    int result = jdbcTemplate.update(SQL,
-	    		empleado.getNombre(),
-	    		empleado.getApellidos(),
-	    		empleado.getFechaNacimiento(),
-		        String.valueOf(empleado.getSexo()),
-		        empleado.getTelefono(),
-		        empleado.getCorreoElectronico(),
-		        empleado.getImagenRuta(),
-		        empleado.getDireccion(),
-		        empleado.getNombreContactoEmergencia(),
-		        empleado.getTelContactoEmergencia(),
-		        empleado.getIdPersona()
-		    );
+	    if (empleado.getRolEmpleado() == null)
+	        throw new IllegalArgumentException("Cada empleado DEBE tener un rol.");
 
-		return result > 0;
+	    String sqlPersona = """
+	        UPDATE Persona
+	        SET nombre = ?, apellidos = ?, fecha_nacimiento = ?, sexo = ?,
+	            telefono = ?, correo_electronico = ?, imagen = ?, direccion = ?,
+	            nombre_contacto_emergencia = ?, tel_contacto_emergencia = ?
+	        WHERE id_persona = ?
+	    """;
+	    int filasPersona = jdbcTemplate.update(sqlPersona,
+	        empleado.getNombre(),
+	        empleado.getApellidos(),
+	        empleado.getFechaNacimiento(),
+	        String.valueOf(empleado.getSexo()),
+	        empleado.getTelefono(),
+	        empleado.getCorreoElectronico(),
+	        empleado.getImagenRuta(),
+	        empleado.getDireccion(),
+	        empleado.getNombreContactoEmergencia(),
+	        empleado.getTelContactoEmergencia(),
+	        empleado.getIdPersona()
+	    );
+
+	    String sqlEmpleado = """
+	        UPDATE Empleado
+	        SET rol_empleado = ?
+	        WHERE id_empleado = ?
+	    """;
+	    int filasEmpleado = jdbcTemplate.update(sqlEmpleado,
+	        empleado.getRolEmpleado(),
+	        empleado.getIdEmpleado()
+	    );
+
+	    return (filasPersona > 0 || filasEmpleado > 0);
 	}// End of method [updateEmpleado].
 }// End of class [EmpleadoData].
