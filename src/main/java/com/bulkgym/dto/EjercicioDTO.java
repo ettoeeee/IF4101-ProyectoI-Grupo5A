@@ -2,7 +2,6 @@ package com.bulkgym.dto;
 
 import java.util.List;
 
-import com.bulkgym.domain.CategoriaEjercicio;
 import com.bulkgym.domain.Rutina;
 
 public class EjercicioDTO {
@@ -11,7 +10,7 @@ public class EjercicioDTO {
     private String equipo;
     private int series;
     private int repeticiones;
-    private List<CategoriaEjercicio> categoriaEjercicio;
+    private int idCategoria;  // CAMBIO: ahora es solo un idCategoria
     private List<Rutina> rutina;
 
     // Getters y Setters
@@ -47,12 +46,12 @@ public class EjercicioDTO {
         this.repeticiones = repeticiones;
     }
 
-    public List<CategoriaEjercicio> getCategoriaEjercicio() {
-        return categoriaEjercicio;
+    public int getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setCategoriaEjercicio(List<CategoriaEjercicio> categoriaEjercicio) {
-        this.categoriaEjercicio = categoriaEjercicio;
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public List<Rutina> getRutina() {

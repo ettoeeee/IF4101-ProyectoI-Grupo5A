@@ -29,7 +29,9 @@ public class SecurityConfig {
                     "api/medidas/**",
                     "/api/instructores/**",
                     "/api/categorias/**",
-                    "/api/ejercicios/**"
+                    "/api/ejercicios/**",
+                    "/api/empleados/**",
+                    "/uploads/**"
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/trainer/**").hasRole("ENTRENADOR")

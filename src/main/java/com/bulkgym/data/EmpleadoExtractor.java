@@ -21,7 +21,7 @@ public class EmpleadoExtractor implements ResultSetExtractor<List<Empleado>>{
 			if (empleado == null) {
 				empleado = new Empleado();
 				empleado.setIdEmpleado(id);
-				empleado.setRolEmpleado("rol_empleado");
+				empleado.setRolEmpleado(rs.getString("rol_empleado"));
 				
                 empleado.setIdPersona(rs.getInt("id_persona"));
                 empleado.setNombre(rs.getString("nombre"));
