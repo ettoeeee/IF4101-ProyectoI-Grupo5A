@@ -1,6 +1,7 @@
 package com.bulkgym.restcontroller;
 
 import com.bulkgym.business.EjercicioBusiness;
+import com.bulkgym.domain.CategoriaEjercicio;
 import com.bulkgym.domain.Ejercicio;
 import com.bulkgym.domain.FotografiaEjercicio;
 import com.bulkgym.dto.EjercicioDTO;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ejercicios")
@@ -30,11 +33,17 @@ public class EjercicioRestController {
 
     // Ruta para insertar un nuevo ejercicio
     @PostMapping
-    public ResponseEntity<RespuestaDTO> insertarEjercicio(@RequestBody EjercicioDTO ejercicioDTO) {
+    public ResponseEntity<?> insertarEjercicio(@RequestBody EjercicioDTO ejercicioDTO) {
         Ejercicio ejercicio = mapearDtoAEjercicio(ejercicioDTO);
         ejercicioBusiness.insertarEjercicio(ejercicio);
-        return ResponseEntity.ok(new RespuestaDTO("Ejercicio insertado con éxito."));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensaje", "Ejercicio insertado con éxito.");
+        response.put("idEjercicio", ejercicio.getIdEjercicio()); // aquí devolvemos el ID generado
+
+        return ResponseEntity.ok(response);
     }
+
 
     // Ruta para listar todos los ejercicios
     @GetMapping
@@ -77,15 +86,13 @@ public class EjercicioRestController {
     @PostMapping(value = "/{id}/fotografias", consumes = "multipart/form-data")
     public ResponseEntity<RespuestaDTO> agregarFotografiaAEjercicio(
         @PathVariable("id") int id,
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("ejercicio") String ejercicioJson
+        @RequestParam("file") MultipartFile file
     ) {
         try {
-            // Procesar el ejercicio (suponiendo que es un JSON que necesita ser deserializado)
-            ObjectMapper objectMapper = new ObjectMapper();
-            EjercicioDTO ejercicioDTO = objectMapper.readValue(ejercicioJson, EjercicioDTO.class);
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body(new RespuestaDTO("Archivo vacío."));
+            }
 
-            // Buscar el ejercicio
             Ejercicio ejercicio = ejercicioBusiness.findAllExercises().stream()
                     .filter(e -> e.getIdEjercicio() == id)
                     .findFirst()
@@ -95,31 +102,33 @@ public class EjercicioRestController {
                 return ResponseEntity.status(404).body(new RespuestaDTO("Ejercicio no encontrado."));
             }
 
-            // Guardar la foto en el sistema
-            String uploadDir = "uploads/ejercicios/";
-            String originalFilename = file.getOriginalFilename();
-            String filePath = uploadDir + System.currentTimeMillis() + "_" + originalFilename;
-
+            String uploadDir = System.getProperty("user.dir") + "/uploads/ejercicios/";
             java.nio.file.Path uploadPath = java.nio.file.Paths.get(uploadDir);
+
             if (!java.nio.file.Files.exists(uploadPath)) {
                 java.nio.file.Files.createDirectories(uploadPath);
             }
 
-            java.nio.file.Path path = java.nio.file.Paths.get(filePath);
-            file.transferTo(path.toFile());
+            String originalFilename = file.getOriginalFilename();
+            String filename = System.currentTimeMillis() + "_" + originalFilename;
+            java.nio.file.Path filePath = uploadPath.resolve(filename);
 
-            // Asociar la fotografía al ejercicio y guardar en la base de datos
+            file.transferTo(filePath.toFile());
+
             FotografiaEjercicio fotografia = new FotografiaEjercicio();
             fotografia.setIdEjercicio(id);
-            fotografia.setRutaImagen(filePath);
+            fotografia.setRutaImagen(filename);  // 👈👈 SOLO el nombre, no todo el path
+
             ejercicioBusiness.insertarFotografia(fotografia);
 
             return ResponseEntity.ok(new RespuestaDTO("Fotografía asociada y guardada con éxito."));
 
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body(new RespuestaDTO("Error al guardar la fotografía."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(new RespuestaDTO("Error al guardar la fotografía: " + e.getMessage()));
         }
     }
+
 
 
     // Ruta para eliminar una fotografía asociada a un ejercicio
@@ -147,13 +156,19 @@ public class EjercicioRestController {
         }
     }
 
-    // Función privada para mapear de DTO a Ejercicio
     private Ejercicio mapearDtoAEjercicio(EjercicioDTO dto) {
         Ejercicio ejercicio = new Ejercicio();
         ejercicio.setNombreEjercicio(dto.getNombreEjercicio());
-        ejercicio.setCategoriaEjercicio(dto.getCategoriaEjercicio());
+
+        // Mapeo de categoría (crear una lista con 1 categoría a partir del ID recibido)
+        CategoriaEjercicio categoria = new CategoriaEjercicio();
+        categoria.setIdCategoriaEjercicio(dto.getIdCategoria());
+
+        ejercicio.setCategoriaEjercicio(List.of(categoria)); // ✅ Le pasamos una lista con 1 sola categoría
+
         return ejercicio;
     }
+
 
     // Manejo de excepciones
     @ExceptionHandler(IllegalArgumentException.class)

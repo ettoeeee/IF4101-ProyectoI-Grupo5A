@@ -16,7 +16,8 @@ public class EjercicioBusiness {
 	@Autowired
 	private EjercicioData ejercicioData;
 	
-	private FotografiaEjercicioData fotografiaEjercicioData;
+    @Autowired
+    private FotografiaEjercicioData fotografiaEjercicioData; // <-- AGREGA EL @Autowired AQUÍ
 	
 	// Obtener todos los ejercicios registrados
     public List<Ejercicio> findAllExercises() {

@@ -67,9 +67,12 @@ public class EjercicioData {
     }
 
     @Transactional
-    public void delete(int idEjercicio) {
-        String sql = "DELETE FROM Ejercicio WHERE id_ejercicio = ?";
-        jdbcTemplate.update(sql, idEjercicio);
+    public void delete(int id) {
+        // Primero eliminar las fotografías asociadas
+        jdbcTemplate.update("DELETE FROM FotografiasEjercicio WHERE id_ejercicio = ?", id);
+
+        // Luego eliminar el ejercicio
+        jdbcTemplate.update("DELETE FROM Ejercicio WHERE id_ejercicio = ?", id);
     }
 
     @Transactional(readOnly = true)
