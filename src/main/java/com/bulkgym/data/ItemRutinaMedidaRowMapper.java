@@ -20,9 +20,9 @@ public class ItemRutinaMedidaRowMapper implements RowMapper {
 
         // Crear la plantilla de medida (MedidaCorporal)
         MedidaCorporal plantilla = new MedidaCorporal();
-        plantilla.setIdMedidaCorporal(rs.getInt("id_media_corporal"));
-        plantilla.setTipoMedida(rs.getString("tipo_medida"));
-        plantilla.setUnidad(rs.getString("unidad"));
+        plantilla.setCodMedida(rs.getInt("id_media_corporal"));
+        plantilla.setNombreMedida(rs.getString("tipo_medida"));
+        plantilla.setUnidadMedida(rs.getString("unidad"));
 
         // Asignar plantilla al item
         item.setMedidaCorporal(plantilla);

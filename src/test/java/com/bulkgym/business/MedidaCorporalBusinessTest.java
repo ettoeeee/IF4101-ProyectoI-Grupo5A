@@ -120,26 +120,26 @@ public class MedidaCorporalBusinessTest {
         // Verificar que existe la medida con ID 6 (Cintura)
         MedidaCorporal medidaCintura = medidaCorporalBusiness.obtenerPorId(6);
         assertNotNull(medidaCintura);
-        assertEquals("Cintura", medidaCintura.getTipoMedida());
-        assertEquals("cm", medidaCintura.getUnidad());
+        assertEquals("Cintura", medidaCintura.getNombreMedida());
+        assertEquals("cm", medidaCintura.getUnidadMedida());
 
         // Verificar que existe la medida con ID 7 (Pecho)
         MedidaCorporal medidaPecho = medidaCorporalBusiness.obtenerPorId(7);
         assertNotNull(medidaPecho);
-        assertEquals("Pecho", medidaPecho.getTipoMedida());
-        assertEquals("cm", medidaPecho.getUnidad());
+        assertEquals("Pecho", medidaPecho.getNombreMedida());
+        assertEquals("cm", medidaPecho.getUnidadMedida());
 
         // Verificar que existe la medida con ID 8 (Bíceps)
         MedidaCorporal medidaBíceps = medidaCorporalBusiness.obtenerPorId(8);
         assertNotNull(medidaBíceps);
-        assertEquals("Bíceps", medidaBíceps.getTipoMedida());
-        assertEquals("cm", medidaBíceps.getUnidad());
+        assertEquals("Bíceps", medidaBíceps.getNombreMedida());
+        assertEquals("cm", medidaBíceps.getUnidadMedida());
         
         // Verificar que existe la medida con ID 15 (Cintura)
         MedidaCorporal medidaTobillo = medidaCorporalBusiness.obtenerPorId(15);
         assertNotNull(medidaTobillo);
-        assertEquals("Tobillo", medidaTobillo.getTipoMedida());
-        assertEquals("cm", medidaTobillo.getUnidad());
+        assertEquals("Tobillo", medidaTobillo.getNombreMedida());
+        assertEquals("cm", medidaTobillo.getUnidadMedida());
 
         // ID que NO exista
         MedidaCorporal medidaInexistente = medidaCorporalBusiness.obtenerPorId(1000);

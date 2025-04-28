@@ -21,16 +21,16 @@ public class ItemRutinaMedidaBusinessTest {
          // Acceder y modificar manualmente los registros 
          List<ItemRutinaMedida> items = business.obtenerItems();
 
-         items.get(0).getMedidaCorporal().setTipoMedida("Altura");
-         items.get(0).getMedidaCorporal().setUnidad("cm");
+         items.get(0).getMedidaCorporal().setNombreMedida("Altura");
+         items.get(0).getMedidaCorporal().setUnidadMedida("cm");
          items.get(0).setValorMedida(175);
 
-         items.get(1).getMedidaCorporal().setTipoMedida("Peso");
-         items.get(1).getMedidaCorporal().setUnidad("kg");
+         items.get(1).getMedidaCorporal().setNombreMedida("Peso");
+         items.get(1).getMedidaCorporal().setUnidadMedida("kg");
          items.get(1).setValorMedida(70);
 
-         items.get(2).getMedidaCorporal().setTipoMedida("Cintura");
-         items.get(2).getMedidaCorporal().setUnidad("cm");
+         items.get(2).getMedidaCorporal().setNombreMedida("Cintura");
+         items.get(2).getMedidaCorporal().setUnidadMedida("cm");
          items.get(2).setValorMedida(85);
 
          // Verificar mediante tests
@@ -41,18 +41,18 @@ public class ItemRutinaMedidaBusinessTest {
          assertAll("Verificar datos realistas",
                  () -> {
                 	 
-                     assertEquals("Altura", items.get(0).getMedidaCorporal().getTipoMedida());
-                     assertEquals("cm", items.get(0).getMedidaCorporal().getUnidad());
+                     assertEquals("Altura", items.get(0).getMedidaCorporal().getNombreMedida());
+                     assertEquals("cm", items.get(0).getMedidaCorporal().getUnidadMedida());
                      assertEquals(175, items.get(0).getValorMedida());
                  },
                  () -> {
-                     assertEquals("Peso", items.get(1).getMedidaCorporal().getTipoMedida());
-                     assertEquals("kg", items.get(1).getMedidaCorporal().getUnidad());
+                     assertEquals("Peso", items.get(1).getMedidaCorporal().getNombreMedida());
+                     assertEquals("kg", items.get(1).getMedidaCorporal().getUnidadMedida());
                      assertEquals(70, items.get(1).getValorMedida());
                  },
                  () -> {
-                     assertEquals("Cintura", items.get(2).getMedidaCorporal().getTipoMedida());
-                     assertEquals("cm", items.get(2).getMedidaCorporal().getUnidad());
+                     assertEquals("Cintura", items.get(2).getMedidaCorporal().getNombreMedida());
+                     assertEquals("cm", items.get(2).getMedidaCorporal().getUnidadMedida());
                      assertEquals(85, items.get(2).getValorMedida());
                  }
          );

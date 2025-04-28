@@ -23,11 +23,11 @@ public class ItemRutinaMedidaBusiness {
         item.setFechaMedicion(LocalDate.now()); //Asignar la fecha actual como fecha de medición.
 
         MedidaCorporal medida = new MedidaCorporal(); //crear un nuevo objeto MedidaCorporal
-        medida.setIdMedidaCorporal(codMedida);
+        medida.setCodMedida(codMedida);
         
         //Se agregan datos ficticios para realizar la prueba
-        medida.setTipoMedida("Altura");
-        medida.setUnidad("cm");
+        medida.setNombreMedida("Altura");
+        medida.setUnidadMedida("cm");
         item.setMedidaCorporal(medida);
 
         listaItems.add(item); //se añade esa medida a la lista de medidas contenidas en una rutina

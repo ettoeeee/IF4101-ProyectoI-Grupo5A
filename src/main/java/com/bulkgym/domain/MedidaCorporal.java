@@ -1,35 +1,44 @@
 package com.bulkgym.domain;
 
 public class MedidaCorporal {
-	private int idMedidaCorporal;
-	private String tipoMedida,
-				   unidad;
-	public int getIdMedidaCorporal() {
-		return idMedidaCorporal;
+	private int codMedida;
+	private String nombreMedida,
+				   unidadMedida, imagen;
+	public int getCodMedida() {
+		return codMedida;
 	}
-	public void setIdMedidaCorporal(int idMedidaCorporal) {
-		this.idMedidaCorporal = idMedidaCorporal;
+	public void setCodMedida(int idMedidaCorporal) {
+		this.codMedida = idMedidaCorporal;
 	}
-	public String getTipoMedida() {
-		return tipoMedida;
+	public String getNombreMedida() {
+		return nombreMedida;
 	}
-	public void setTipoMedida(String tipoMedida) {
-		this.tipoMedida = tipoMedida;
+	public void setNombreMedida(String tipoMedida) {
+		this.nombreMedida = tipoMedida;
 	}
-	public String getUnidad() {
-		return unidad;
+	public String getUnidadMedida() {
+		return unidadMedida;
 	}
-	public void setUnidad(String unidad) {
-		this.unidad = unidad;
+	public void setUnidadMedida(String unidad) {
+		this.unidadMedida = unidad;
 	}
 	
-	public MedidaCorporal(int idMedidaCorporal, String tipoMedida, String unidad) {
+	public MedidaCorporal(int idMedidaCorporal, String tipoMedida, String unidad, String imagen) {
 		super();
-		this.idMedidaCorporal = idMedidaCorporal;
-		this.tipoMedida = tipoMedida;
-		this.unidad = unidad;
+		this.codMedida = idMedidaCorporal;
+		this.nombreMedida = tipoMedida;
+		this.unidadMedida = unidad;
+		this.imagen= imagen;
 	}
 	
 	public MedidaCorporal() {
 	}
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+	
+	
 }

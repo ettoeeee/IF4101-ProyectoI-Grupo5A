@@ -95,6 +95,7 @@ class ClienteBusinessTest {
         verify(clienteData, times(1)).eliminarCliente(1);
     }
 
+    
     @Test
     void testContarClientes() {
         when(clienteData.contarClientes()).thenReturn(5);

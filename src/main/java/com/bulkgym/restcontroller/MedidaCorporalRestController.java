@@ -41,7 +41,12 @@ public class MedidaCorporalRestController {
         if (existente == null) {
             return ResponseEntity.notFound().build();
         }
-        medida.setIdMedidaCorporal(id);
+        
+        if (medida.getImagen() == null || medida.getImagen().isEmpty()) {
+            medida.setImagen(existente.getImagen());
+        }
+        
+        medida.setCodMedida(id);
         medidaBusiness.actualizar(medida);
         return ResponseEntity.noContent().build();
     }

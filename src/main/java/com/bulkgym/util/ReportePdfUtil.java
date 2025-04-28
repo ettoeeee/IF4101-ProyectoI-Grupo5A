@@ -49,9 +49,9 @@ public class ReportePdfUtil {
                 tablaMedidas.addCell("Unidad");
 
                 for (ItemRutinaMedida m : dto.getMedidas()) {
-                    tablaMedidas.addCell(m.getMedidaCorporal().getTipoMedida());
+                    tablaMedidas.addCell(m.getMedidaCorporal().getNombreMedida());
                     tablaMedidas.addCell(String.valueOf(m.getValorMedida()));
-                    tablaMedidas.addCell(m.getMedidaCorporal().getUnidad());
+                    tablaMedidas.addCell(m.getMedidaCorporal().getUnidadMedida());
                 }
 
                 documento.add(tablaMedidas);

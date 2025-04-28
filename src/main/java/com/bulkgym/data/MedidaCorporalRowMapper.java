@@ -12,9 +12,9 @@ public class MedidaCorporalRowMapper implements RowMapper<MedidaCorporal> {
     public MedidaCorporal mapRow(ResultSet rs, int rowNum) throws SQLException {
         MedidaCorporal medida = new MedidaCorporal();
 
-        medida.setIdMedidaCorporal(rs.getInt("id_media_corporal"));
-        medida.setTipoMedida(rs.getString("tipo_medida"));
-        medida.setUnidad(rs.getString("unidad"));
+        medida.setCodMedida(rs.getInt("id_media_corporal"));
+        medida.setNombreMedida(rs.getString("tipo_medida"));
+        medida.setUnidadMedida(rs.getString("unidad"));
 
         return medida;
     }

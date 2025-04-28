@@ -20,12 +20,13 @@ public class SecurityConfig {
         return http
             .cors(cors -> cors.configurationSource(new CorsConfig().corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
+            .securityMatcher("/api/**") 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/login",
                     "/api/logout",
                     "/api/clientes/**",
-                    "/api/medidas/**",
+                    "api/medidas/**",
                     "/api/instructores/**",
                     "/api/categorias/**",
                     "/api/ejercicios/**"
