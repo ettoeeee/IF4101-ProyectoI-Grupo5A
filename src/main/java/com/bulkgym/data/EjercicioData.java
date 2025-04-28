@@ -82,18 +82,28 @@ public class EjercicioData {
 
     }
 
-
     @Transactional
     public void insertarEjercicio(Ejercicio ejercicio) {
-        // Obtenemos el ID de la categoría desde el objeto Ejercicio
         int idCategoriaSeleccionada = ejercicio.getCategoriaEjercicio() != null &&
                                       !ejercicio.getCategoriaEjercicio().isEmpty()
                                       ? ejercicio.getCategoriaEjercicio().get(0).getCodCategoria() : 0;
 
+        // VALIDACIÓN IMPORTANTE
+        if (idCategoriaSeleccionada == 0 || !existeCategoria(idCategoriaSeleccionada)) {
+            throw new IllegalArgumentException("La categoría no existe o no fue proporcionada.");
+        }
+
         String sqlInsert = "INSERT INTO Ejercicio (nombre_ejercicio, id_categoria) VALUES (?, ?)";
         jdbcTemplate.update(sqlInsert,
                 ejercicio.getNombreEjercicio(),
-                idCategoriaSeleccionada);  // Usamos el ID de la categoría directamente desde el objeto Ejercicio
+                idCategoriaSeleccionada);
+    }
+
+    // Nueva función para validar si existe la categoría
+    private boolean existeCategoria(int idCategoria) {
+        String sql = "SELECT COUNT(*) FROM CategoriaEjercicio WHERE id_categoria = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idCategoria);
+        return count != null && count > 0;
     }
 
 
