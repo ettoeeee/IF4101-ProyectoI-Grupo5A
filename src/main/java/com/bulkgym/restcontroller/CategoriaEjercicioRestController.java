@@ -2,7 +2,6 @@ package com.bulkgym.restcontroller;
 
 import com.bulkgym.business.CategoriaBusiness;
 import com.bulkgym.domain.CategoriaEjercicio;
-import com.bulkgym.dto.RespuestaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,49 +10,47 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categorias")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoriaEjercicioRestController {
 
     @Autowired
     private CategoriaBusiness categoriaBusiness;
 
-    @GetMapping("/ping")
-    public String ping() {
-        return "funciona";
+    @GetMapping
+    public ResponseEntity<List<CategoriaEjercicio>> obtenerTodas() {
+        return ResponseEntity.ok(categoriaBusiness.obtenerTodas());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriaEjercicio> obtenerPorId(@PathVariable int id) {
+        CategoriaEjercicio categoria = categoriaBusiness.obtenerPorId(id);
+        return (categoria != null) ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<RespuestaDTO> insertarCategoria(@RequestBody CategoriaEjercicio categoriaEjercicio) {
-        categoriaBusiness.insertarCategoria(categoriaEjercicio);
-        return ResponseEntity.ok(new RespuestaDTO("Categoría de ejercicio insertada con éxito."));
+    public ResponseEntity<CategoriaEjercicio> guardar(@RequestBody CategoriaEjercicio categoria) {
+        categoriaBusiness.guardar(categoria);
+        return ResponseEntity.ok(categoria);
     }
 
-    @GetMapping
-    public ResponseEntity<List<CategoriaEjercicio>> listarCategorias() {
-        List<CategoriaEjercicio> categorias = categoriaBusiness.obtenerTodasLasCategorias();
-        return ResponseEntity.ok(categorias);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> actualizar(@PathVariable int id, @RequestBody CategoriaEjercicio categoria) {
+        CategoriaEjercicio existente = categoriaBusiness.obtenerPorId(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
+        categoria.setIdCategoriaEjercicio(id);
+        categoriaBusiness.actualizar(categoria);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<RespuestaDTO> eliminarCategoria(@PathVariable("id") int id) {
-        // Eliminar la categoría utilizando el método de negocio
-        boolean eliminado = categoriaBusiness.eliminarCategoriaPorId(id);
-        if (eliminado) {
-            return ResponseEntity.ok(new RespuestaDTO("Categoría de ejercicio eliminada con éxito."));
-        } else {
-            return ResponseEntity.status(404).body(new RespuestaDTO("Categoría de ejercicio no encontrada."));
+    public ResponseEntity<Void> eliminar(@PathVariable int id) {
+        CategoriaEjercicio existente = categoriaBusiness.obtenerPorId(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
         }
-    }
-
-
-    @PutMapping("/{id}")
-    public ResponseEntity<RespuestaDTO> modificarCategoria(@PathVariable("id") int id, @RequestBody CategoriaEjercicio categoriaEjercicio) {
-        categoriaEjercicio.setCodCategoria(id);
-        categoriaBusiness.modificarCategoria(id);
-        return ResponseEntity.ok(new RespuestaDTO("Categoría de ejercicio modificada con éxito."));
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RespuestaDTO> manejarIllegalArgument(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().body(new RespuestaDTO(ex.getMessage()));
+        categoriaBusiness.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }

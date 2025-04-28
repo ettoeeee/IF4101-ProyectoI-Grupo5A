@@ -9,32 +9,30 @@ import org.springframework.stereotype.Service;
 import com.bulkgym.data.CategoriaEjercicioData;
 import com.bulkgym.domain.CategoriaEjercicio;
 
+
 @Service
 public class CategoriaBusiness {
 
-	@Autowired
+    @Autowired
     private CategoriaEjercicioData categoriaData;
-    
-    public List<CategoriaEjercicio> obtenerTodasLasCategorias() {
-        return categoriaData.obtenerTodasLasCategorias();
+
+    public List<CategoriaEjercicio> obtenerTodas() {
+        return categoriaData.findAll();
     }
 
-    public List<CategoriaEjercicio> buscarCategoriaPorId(int idCategoria) {
-        return categoriaData.buscarCategoriaPorId(idCategoria);
+    public CategoriaEjercicio obtenerPorId(int id) {
+        return categoriaData.findById(id);
     }
 
-    public boolean eliminarCategoriaPorId(int id) {
-        // Lógica para eliminar la categoría por ID
-        return categoriaData.eliminarCategoriaPorId(id);
+    public void guardar(CategoriaEjercicio categoria) {
+        categoriaData.guardar(categoria);
     }
 
-
-    public CategoriaEjercicio modificarCategoria(int idCategoria) {
-        return categoriaData.modificarCategoria(idCategoria);
+    public void actualizar(CategoriaEjercicio categoria) {
+        categoriaData.update(categoria);
     }
 
-    public void insertarCategoria(CategoriaEjercicio categoriaEjercicio) {
-        categoriaData.insertarCategoria(categoriaEjercicio);
+    public void eliminar(int id) {
+        categoriaData.delete(id);
     }
 }
-

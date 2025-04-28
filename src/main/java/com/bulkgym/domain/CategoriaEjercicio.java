@@ -16,15 +16,18 @@ public class CategoriaEjercicio {
         
     }
 
-    public int getCodCategoria() {
-        return idCategoriaEjercicio;
-    }
+    
+    public int getIdCategoriaEjercicio() {
+		return idCategoriaEjercicio;
+	}
 
-    public void setCodCategoria(int codCategoria) {
-        this.idCategoriaEjercicio = codCategoria;
-    }
 
-    public String getNombreCategoria() {
+	public void setIdCategoriaEjercicio(int idCategoriaEjercicio) {
+		this.idCategoriaEjercicio = idCategoriaEjercicio;
+	}
+
+
+	public String getNombreCategoria() {
         return nombreCategoria;
     }
 

@@ -86,7 +86,7 @@ public class EjercicioData {
     public void insertarEjercicio(Ejercicio ejercicio) {
         int idCategoriaSeleccionada = ejercicio.getCategoriaEjercicio() != null &&
                                       !ejercicio.getCategoriaEjercicio().isEmpty()
-                                      ? ejercicio.getCategoriaEjercicio().get(0).getCodCategoria() : 0;
+                                      ? ejercicio.getCategoriaEjercicio().get(0).getIdCategoriaEjercicio() : 0;
 
         // VALIDACIÓN IMPORTANTE
         if (idCategoriaSeleccionada == 0 || !existeCategoria(idCategoriaSeleccionada)) {
