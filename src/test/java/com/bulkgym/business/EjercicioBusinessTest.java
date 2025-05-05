@@ -1,21 +1,33 @@
 package com.bulkgym.business;
 
-import com.bulkgym.domain.Ejercicio;
 import com.bulkgym.data.EjercicioData;
+import com.bulkgym.domain.CategoriaEjercicio;
+import com.bulkgym.domain.Ejercicio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 public class EjercicioBusinessTest {
 
-    private List<Ejercicio> listaEjercicios;
+    @Mock
+    private EjercicioData ejercicioData;
+
+    @InjectMocks
     private EjercicioBusiness ejercicioBusiness;
 
-    /*
+    private List<Ejercicio> listaEjercicios;
+
     @BeforeEach
     public void setUp() {
         listaEjercicios = new ArrayList<>();
@@ -30,33 +42,6 @@ public class EjercicioBusinessTest {
 
         listaEjercicios.add(ejercicio1);
         listaEjercicios.add(ejercicio2);
-
-        ejercicioBusiness = new EjercicioBusiness() {
-            @Override
-            public List<Ejercicio> findAllExercises() {
-                return listaEjercicios;
-            }
-
-            @Override
-            public void insertarEjercicio(Ejercicio ejercicio) {
-                ejercicio.setIdEjercicio(listaEjercicios.size() + 1); // Simulación de auto-incremento
-                listaEjercicios.add(ejercicio);
-            }
-
-            @Override
-            public boolean eliminarEjercicioC(int idEjercicio) {
-                return listaEjercicios.removeIf(e -> e.getIdEjercicio() == idEjercicio);
-            }
-
-            @Override
-            public void modificarEjercicioPorId(int idEjercicio) {
-                for (Ejercicio e : listaEjercicios) {
-                    if (e.getIdEjercicio() == idEjercicio) {
-                        e.setNombreEjercicio("Modificado");
-                    }
-                }
-            }
-        };
     }
 
     @Test
@@ -66,41 +51,71 @@ public class EjercicioBusinessTest {
 
         ejercicioBusiness.insertarEjercicio(nuevo);
 
-        assertEquals(3, listaEjercicios.size());
-        assertEquals("Abdominales", listaEjercicios.get(2).getNombreEjercicio());
+        verify(ejercicioData).guardar(nuevo);
     }
 
     @Test
-    public void testEliminarEjercicioExistente() {
-        boolean resultado = ejercicioBusiness.eliminarEjercicioC(1);
+    public void testEliminarEjercicio() {
+        boolean result = ejercicioBusiness.eliminarEjercicioC(1);
 
-        assertTrue(resultado);
-        assertEquals(1, listaEjercicios.size());
+        verify(ejercicioData).delete(1);
+        assertTrue(result);
     }
 
     @Test
-    public void testEliminarEjercicioNoExistente() {
-        boolean resultado = ejercicioBusiness.eliminarEjercicioC(99);
+    public void testModificarEjercicioPorId() {
+        Ejercicio ejercicio = new Ejercicio();
+        ejercicio.setIdEjercicio(2);
+        ejercicio.setNombreEjercicio("ViejoNombre");
 
-        assertFalse(resultado);
-        assertEquals(2, listaEjercicios.size());
+        when(ejercicioData.findById(2)).thenReturn(ejercicio);
+
+        ejercicioBusiness.modificarEjercicioPorId(2, "NuevoNombre", "nueva.jpg", 10);
+
+        assertEquals("NuevoNombre", ejercicio.getNombreEjercicio());
+        assertEquals("nueva.jpg", ejercicio.getImagen());
+        assertEquals(10, ejercicio.getCategoriaEjercicio().get(0).getIdCategoriaEjercicio());
+
+        verify(ejercicioData).update(ejercicio);
     }
 
     @Test
-    public void testModificarEjercicio() {
-        ejercicioBusiness.modificarEjercicioPorId(2);
+    public void testModificarEjercicioPorIdNoExistente() {
+        when(ejercicioData.findById(99)).thenReturn(null);
 
-        assertEquals("Modificado", listaEjercicios.get(1).getNombreEjercicio());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            ejercicioBusiness.modificarEjercicioPorId(99, "NuevoNombre", "nueva.jpg", 5);
+        });
+
+        assertEquals("El ejercicio con ID 99 no existe.", exception.getMessage());
     }
 
     @Test
-    public void testBuscarTodosEjercicios() {
+    public void testFindAllExercises() {
+        when(ejercicioData.findAll()).thenReturn(listaEjercicios);
+
         List<Ejercicio> resultado = ejercicioBusiness.findAllExercises();
 
         assertEquals(2, resultado.size());
         assertEquals("Flexiones", resultado.get(0).getNombreEjercicio());
         assertEquals("Sentadillas", resultado.get(1).getNombreEjercicio());
     }
-    */
-}
 
+    @Test
+    public void testContarEjercicios() {
+        when(ejercicioData.contarEjercicios()).thenReturn(2);
+
+        int total = ejercicioBusiness.contarEjercicios();
+
+        assertEquals(2, total);
+    }
+
+    @Test
+    public void testContarCategorias() {
+        when(ejercicioData.contarCategorias()).thenReturn(3);
+
+        int total = ejercicioBusiness.contarCategorias();
+
+        assertEquals(3, total);
+    }
+}
