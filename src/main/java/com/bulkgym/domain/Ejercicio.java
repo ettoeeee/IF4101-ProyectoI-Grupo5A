@@ -8,18 +8,16 @@ public class Ejercicio {
     private String nombreEjercicio;
     private String imagen;
     private List<CategoriaEjercicio> categoriaEjercicio;
-    private List<FotografiaEjercicio> fotografiasEjercicios;
 
     // Constructor vacío
     public Ejercicio() {}
 
     // Constructor completo
-    public Ejercicio(int idEjercicio, String nombreEjercicio, String imagen, List<CategoriaEjercicio> categoriaEjercicio, List<FotografiaEjercicio> fotografiasEjercicios) {
+    public Ejercicio(int idEjercicio, String nombreEjercicio, String imagen, List<CategoriaEjercicio> categoriaEjercicio) {
         this.idEjercicio = idEjercicio;
         this.nombreEjercicio = nombreEjercicio;
         this.imagen = imagen;
         this.categoriaEjercicio = categoriaEjercicio;
-        this.fotografiasEjercicios = fotografiasEjercicios;
     }
 
     // Getters y Setters
@@ -55,11 +53,5 @@ public class Ejercicio {
         this.categoriaEjercicio = categoriaEjercicio;
     }
 
-    public List<FotografiaEjercicio> getFotografiasEjercicio() {
-        return fotografiasEjercicios;
-    }
-
-    public void setFotografiasEjercicio(List<FotografiaEjercicio> fotografiasEjercicios) {
-        this.fotografiasEjercicios = fotografiasEjercicios;
-    }
+    
 }

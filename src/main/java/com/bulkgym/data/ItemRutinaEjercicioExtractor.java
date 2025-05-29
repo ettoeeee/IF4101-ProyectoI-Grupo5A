@@ -2,41 +2,38 @@ package com.bulkgym.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import com.bulkgym.domain.Ejercicio;
 import com.bulkgym.domain.ItemRutinaEjercicio;
 
 public class ItemRutinaEjercicioExtractor implements ResultSetExtractor<List<ItemRutinaEjercicio>> {
 
     @Override
-    public List<ItemRutinaEjercicio> extractData(ResultSet rs) throws SQLException {
-        Map<Integer, ItemRutinaEjercicio> map = new HashMap<>();
+    public List<ItemRutinaEjercicio> extractData(ResultSet rs) throws SQLException, DataAccessException {
+        Map<String, ItemRutinaEjercicio> map = new HashMap<>();
+        ItemRutinaEjercicio item = null;
 
         while (rs.next()) {
-            int id = rs.getInt("id_item_rutina_ejercicio");
-
-            ItemRutinaEjercicio item = map.get(id);
+            int idRutina = rs.getInt("id_rutina");
+            int idEjercicio = rs.getInt("id_ejercicio");
+            // La clave compuesta la armamos con un String (puedes cambiar si prefieres otro tipo)
+            String key = idRutina + "-" + idEjercicio;
+            item = map.get(key);
 
             if (item == null) {
                 item = new ItemRutinaEjercicio();
-                item.setIdItemRutinaEjercicio(id);
-                item.setSeriesEjercicio(rs.getInt("series_ejercicio"));
-                item.setRepeticionesEjercicio(rs.getInt("repeticiones_ejercicio"));
+                item.setIdRutina(idRutina);
+                item.setIdEjercicio(idEjercicio);
+                item.setSeriesEjercicio(rs.getObject("series_ejercicio") != null ? rs.getInt("series_ejercicio") : null);
+                item.setRepeticionesEjercicio(rs.getObject("repeticiones_ejercicio") != null ? rs.getInt("repeticiones_ejercicio") : null);
+                item.setEquipoEjercicio(rs.getString("equipo_ejercicio"));
 
-                Ejercicio ejercicio = new Ejercicio();
-                ejercicio.setIdEjercicio(rs.getInt("id_ejercicio"));
-                ejercicio.setNombreEjercicio(rs.getString("nombre_ejercicio"));
-                
-                map.put(id, item);
+                map.put(key, item);
             }
         }
-
         return new ArrayList<>(map.values());
     }
 }

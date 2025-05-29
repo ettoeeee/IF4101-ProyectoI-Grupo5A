@@ -54,7 +54,7 @@ class ReporteRutinaServiceTest {
     void generarReporte_deberiaRetornarArregloDeBytes() {
         when(rutinaData.buscarPorId(1)).thenReturn(rutina);
         when(clienteData.buscarPorId(10)).thenReturn(cliente);
-        when(ejercicioData.obtenerEjerciciosPorRutina(1)).thenReturn(Collections.emptyList());
+        //when(ejercicioData.obtenerEjerciciosPorRutina(1)).thenReturn(Collections.emptyList());
 
         // Simular un PDF generado
         byte[] pdfMock = new byte[]{1, 2, 3};

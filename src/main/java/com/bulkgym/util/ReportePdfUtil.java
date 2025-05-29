@@ -73,10 +73,11 @@ public class ReportePdfUtil {
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     tablaEjercicios.addCell(cell);
                 }
+                /*
                 for (ItemRutinaEjercicio e : dto.getEjercicios()) {
-                    tablaEjercicios.addCell(e.getEjercicio().getNombreEjercicio());
+                //    tablaEjercicios.addCell(e.getEjercicio().getNombreEjercicio());
                     // concatenamos todas las categorías en una sola celda
-                    String categorias = e.getEjercicio()
+                  //  String categorias = e.getEjercicio()
                                          .getCategoriaEjercicio()
                                          .stream()
                                          .map(CategoriaEjercicio::getNombreCategoria)
@@ -85,6 +86,7 @@ public class ReportePdfUtil {
                     tablaEjercicios.addCell(String.valueOf(e.getSeriesEjercicio()));
                     tablaEjercicios.addCell(String.valueOf(e.getRepeticionesEjercicio()));
                 }
+                */
                 documento.add(tablaEjercicios);
             }
 

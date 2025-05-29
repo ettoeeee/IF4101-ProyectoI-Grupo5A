@@ -8,7 +8,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.bulkgym.domain.Ejercicio;
-import com.bulkgym.domain.FotografiaEjercicio;
 import com.bulkgym.domain.CategoriaEjercicio;
 
 public class EjercicioExtractor implements ResultSetExtractor<List<Ejercicio>> {
@@ -33,24 +32,11 @@ public class EjercicioExtractor implements ResultSetExtractor<List<Ejercicio>> {
 	            categoria.setNombreCategoria(rs.getString("nombre_categoria"));
 	            categorias.add(categoria);
 	            ejercicio.setCategoriaEjercicio(categorias);
-
-	            // No fotografías por ahora
-	            ejercicio.setFotografiasEjercicio(new ArrayList<>());
 	            
 	            map.put(id, ejercicio);
 	        }
 
-	        // 🔥 Comentar o eliminar esta parte para evitar el error
-	        /*
-	        if (rs.getString("ruta_imagen") != null) {
-	            FotografiaEjercicio fotografia = new FotografiaEjercicio();
-	            fotografia.setIdFotografia(rs.getInt("id_fotografia"));
-	            fotografia.setRutaImagen(rs.getString("ruta_imagen"));
-	            fotografia.setIdEjercicio(id);
-
-	            ejercicio.getFotografiasEjercicio().add(fotografia);
-	        }
-	        */
+	    
 	    }
 	    return new ArrayList<>(map.values());
 	}

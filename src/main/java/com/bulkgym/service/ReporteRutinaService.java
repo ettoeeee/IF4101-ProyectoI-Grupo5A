@@ -42,7 +42,7 @@ public class ReporteRutinaService {
 
         // 4. Obtener medidas y ejercicios
       
-        List<ItemRutinaEjercicio> ejercicios = ejercicioData.obtenerEjerciciosPorRutina(idRutina);
+        //List<ItemRutinaEjercicio> ejercicios = ejercicioData.obtenerEjerciciosPorRutina(idRutina);
 
         // 5. Armar DTO
         ReporteRutinaDTO dto = new ReporteRutinaDTO();
@@ -51,7 +51,7 @@ public class ReporteRutinaService {
         dto.setEdadCliente(edad);
         dto.setObjetivo(rutina.getObjetivo());
         dto.setFechaCreacion(rutina.getFechaCreacion());
-        dto.setEjercicios(ejercicios);
+        //dto.setEjercicios(ejercicios);
 
         // 6. Generar PDF
         return reportePdfUtil.generarPdfDesdeRutina(dto);
