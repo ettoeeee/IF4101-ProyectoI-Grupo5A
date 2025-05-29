@@ -1,12 +1,13 @@
 package com.bulkgym.domain;
 
-import java.time.LocalDate;
+
 
 public class ItemRutinaMedida extends MedidaCorporal{
 	private int idItemRutinaMedida;
 	private double valorMedida;
-	private LocalDate fechaMedicion;
+	
 	private MedidaCorporal medidaCorporal;
+	private Rutina rutina;
 	
 	public int getIdItemRutinaMedida() {
 		return idItemRutinaMedida;
@@ -20,11 +21,12 @@ public class ItemRutinaMedida extends MedidaCorporal{
 	public void setValorMedida(double valorMedida) {
 		this.valorMedida = valorMedida;
 	}
-	public LocalDate getFechaMedicion() {
-		return fechaMedicion;
+	
+	public Rutina getRutina() {
+		return rutina;
 	}
-	public void setFechaMedicion(LocalDate fechaMedicion) {
-		this.fechaMedicion = fechaMedicion;
+	public void setRutina(Rutina rutina) {
+		this.rutina= rutina;
 	}
 	
 	public MedidaCorporal getMedidaCorporal() {
@@ -33,10 +35,9 @@ public class ItemRutinaMedida extends MedidaCorporal{
 	public void setMedidaCorporal(MedidaCorporal medidaCorporal) {
 		this.medidaCorporal = medidaCorporal;
 	}
-	public ItemRutinaMedida(int valorMedida, LocalDate fechaMedicion) {
+	public ItemRutinaMedida(int valorMedida) {
 		super();
 		this.valorMedida = valorMedida;
-		this.fechaMedicion = fechaMedicion;
 	}
 	
 	public ItemRutinaMedida() {

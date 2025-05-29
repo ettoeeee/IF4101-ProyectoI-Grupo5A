@@ -1,60 +1,75 @@
 package com.bulkgym.business;
 
+import com.bulkgym.data.ItemRutinaMedidaData;
 import com.bulkgym.domain.ItemRutinaMedida;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.*;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class ItemRutinaMedidaBusinessTest {
+class ItemRutinaMedidaBusinessTest {
+
+    @InjectMocks
+    private ItemRutinaMedidaBusiness business;
+
+    @Mock
+    private ItemRutinaMedidaData data;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
-    public void testInsertarItemRM_Simulada() {
-    	 ItemRutinaMedidaBusiness business = new ItemRutinaMedidaBusiness();
+    void testObtenerTodas() {
+        when(data.findAll()).thenReturn(List.of(new ItemRutinaMedida()));
 
-         // Insertar, a traves del llamado del metodo en la clase ItemRutinaMedidaBusiness, 3 registros ficticios
-         business.insertarItemRM(1, 201); // Altura
-         business.insertarItemRM(1, 202); // Peso
-         business.insertarItemRM(1, 203); // Cintura
+        List<ItemRutinaMedida> result = business.obtenerTodas();
 
-         // Acceder y modificar manualmente los registros 
-         List<ItemRutinaMedida> items = business.obtenerItems();
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        verify(data).findAll();
+    }
 
-         items.get(0).getMedidaCorporal().setNombreMedida("Altura");
-         items.get(0).getMedidaCorporal().setUnidadMedida("cm");
-         items.get(0).setValorMedida(175);
+    @Test
+    void testObtenerPorId() {
+        int id = 1;
+        when(data.findById(id)).thenReturn(new ItemRutinaMedida());
 
-         items.get(1).getMedidaCorporal().setNombreMedida("Peso");
-         items.get(1).getMedidaCorporal().setUnidadMedida("kg");
-         items.get(1).setValorMedida(70);
+        ItemRutinaMedida result = business.obtenerPorId(id);
 
-         items.get(2).getMedidaCorporal().setNombreMedida("Cintura");
-         items.get(2).getMedidaCorporal().setUnidadMedida("cm");
-         items.get(2).setValorMedida(85);
+        assertNotNull(result);
+        verify(data).findById(id);
+    }
 
-         // Verificar mediante tests
-         assertEquals(3, items.size()); //Tamaño de la lista de registros
+    @Test
+    void testGuardar() {
+        ItemRutinaMedida item = new ItemRutinaMedida();
 
-         //Recordar que en la lista se comienza por el indice 0, por lo que se va a analizar los test desde esa posicion
-         
-         assertAll("Verificar datos realistas",
-                 () -> {
-                	 
-                     assertEquals("Altura", items.get(0).getMedidaCorporal().getNombreMedida());
-                     assertEquals("cm", items.get(0).getMedidaCorporal().getUnidadMedida());
-                     assertEquals(175, items.get(0).getValorMedida());
-                 },
-                 () -> {
-                     assertEquals("Peso", items.get(1).getMedidaCorporal().getNombreMedida());
-                     assertEquals("kg", items.get(1).getMedidaCorporal().getUnidadMedida());
-                     assertEquals(70, items.get(1).getValorMedida());
-                 },
-                 () -> {
-                     assertEquals("Cintura", items.get(2).getMedidaCorporal().getNombreMedida());
-                     assertEquals("cm", items.get(2).getMedidaCorporal().getUnidadMedida());
-                     assertEquals(85, items.get(2).getValorMedida());
-                 }
-         );
-     }
+        business.guardar(item);
+
+        verify(data).guardar(item);
+    }
+
+    @Test
+    void testActualizar() {
+        ItemRutinaMedida item = new ItemRutinaMedida();
+
+        business.actualizar(item);
+
+        verify(data).update(item);
+    }
+
+    @Test
+    void testEliminar() {
+        int id = 42;
+
+        business.eliminar(id);
+
+        verify(data).delete(id);
+    }
 }

@@ -16,7 +16,7 @@ public class ItemRutinaMedidaRowMapper implements RowMapper {
         ItemRutinaMedida item = new ItemRutinaMedida();
         item.setIdItemRutinaMedida(rs.getInt("id_item_rutina_medida"));
         item.setValorMedida(rs.getDouble("valor_medida"));
-        item.setFechaMedicion(rs.getDate("fecha_medicion").toLocalDate());
+    
 
         // Crear la plantilla de medida (MedidaCorporal)
         MedidaCorporal plantilla = new MedidaCorporal();

@@ -1,39 +1,45 @@
 package com.bulkgym.business;
 
+import com.bulkgym.data.ItemRutinaMedidaData;
+import com.bulkgym.data.MedidaCorporalData;
 import com.bulkgym.domain.ItemRutinaMedida;
 import com.bulkgym.domain.MedidaCorporal;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class ItemRutinaMedidaBusiness {
 
-    private List<ItemRutinaMedida> listaItems; //guarda todos los objetos ItemRutinaMedida creados.
+    @Autowired
+    private ItemRutinaMedidaData itemData;
 
-    public ItemRutinaMedidaBusiness() {
-        this.listaItems = new ArrayList<>(); // inicializa listaItems como una lista vacía, para porteriormente poder guardar objetos en esa lista
+    @Autowired
+    private MedidaCorporalData medidaData; 
+
+    public List<ItemRutinaMedida> obtenerTodas() {
+        return itemData.findAll();
     }
 
-    public void insertarItemRM(int idRutina, int codMedida) { //Metodo temporal usado como prueba para verificar si elproyecto sirve de forma correcta
-    	//Alno tener una coneccion con el Data, se tuvo que crear el metodo insertar de forma temporal en el business,para poder verificar si funciona correctamente el proyecto y el metodo como tal
-        ItemRutinaMedida item = new ItemRutinaMedida(); //instancia la clase ItemRutinaMedida 
-        item.setIdItemRutinaMedida(listaItems.size() + 1);  //El ID del nuevo item se asigna automáticamente con base en el tamaño de la lista actual, en caso de que la lista tenga un tamaño de 6, entonces el diguiente id del proximo registro sera 7
-        item.setValorMedida(100); //establecer el valor de la medida en 100, como dato ficticio para comporbar si funciona el metodo
-        item.setFechaMedicion(LocalDate.now()); //Asignar la fecha actual como fecha de medición.
-
-        MedidaCorporal medida = new MedidaCorporal(); //crear un nuevo objeto MedidaCorporal
-        medida.setCodMedida(codMedida);
-        
-        //Se agregan datos ficticios para realizar la prueba
-        medida.setNombreMedida("Altura");
-        medida.setUnidadMedida("cm");
-        item.setMedidaCorporal(medida);
-
-        listaItems.add(item); //se añade esa medida a la lista de medidas contenidas en una rutina
+    public List<MedidaCorporal> obtenerTodasLasMedidas() {
+        return medidaData.findAll(); 
     }
 
-    public List<ItemRutinaMedida> obtenerItems() {
-        return listaItems; //retorna la lista de todas las medidas corporales insertadas
+    public ItemRutinaMedida obtenerPorId(int id) {
+        return itemData.findById(id);
+    }
+
+    public void guardar(ItemRutinaMedida item) {
+        itemData.guardar(item);
+    }
+
+    public void actualizar(ItemRutinaMedida item) {
+        itemData.update(item);
+    }
+
+    public void eliminar(int id) {
+        itemData.delete(id);
     }
 }

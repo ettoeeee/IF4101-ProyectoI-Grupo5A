@@ -1,44 +1,39 @@
 package com.bulkgym.data;
 
+import com.bulkgym.domain.ItemRutinaMedida;
+import com.bulkgym.domain.MedidaCorporal;
+import com.bulkgym.domain.Rutina;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.springframework.jdbc.core.ResultSetExtractor;
-import com.bulkgym.domain.ItemRutinaMedida;
-import com.bulkgym.domain.MedidaCorporal;
 
 public class ItemRutinaMedidaExtractor implements ResultSetExtractor<List<ItemRutinaMedida>> {
 
-    private final MedidaCorporalRowMapper medidaMapper = new MedidaCorporalRowMapper();
-
     @Override
-    public List<ItemRutinaMedida> extractData(ResultSet rs) throws SQLException {
-        Map<Integer, ItemRutinaMedida> map = new HashMap<>();
-
+    public List<ItemRutinaMedida> extractData(ResultSet rs) throws SQLException, DataAccessException {
+        List<ItemRutinaMedida> items = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt("id_item_rutina_medida");
+            ItemRutinaMedida item = new ItemRutinaMedida();
+            item.setIdItemRutinaMedida(rs.getInt("idItem"));
+            item.setValorMedida(rs.getDouble("valorMedida"));
+            
+            Rutina rutina= new Rutina();
+            rutina.setIdRutina(rs.getInt("id_Rutina"));
 
-            ItemRutinaMedida item = map.get(id);
+            MedidaCorporal medida = new MedidaCorporal();
+            medida.setCodMedida(rs.getInt("codMedida"));
+            medida.setNombreMedida(rs.getString("nombreMedida"));
+            medida.setUnidadMedida(rs.getString("unidadMedida"));
+            medida.setImagen(rs.getString("imagen"));
 
-            if (item == null) {
-                item = new ItemRutinaMedida();
-                item.setIdItemRutinaMedida(id);
-                item.setValorMedida(rs.getDouble("valor_medida"));
-                item.setFechaMedicion(rs.getDate("fecha_medicion").toLocalDate());
-
-                // Usamos el row mapper para construir la plantilla
-                MedidaCorporal medida = medidaMapper.mapRow(rs, rs.getRow());
-                item.setMedidaCorporal(medida);
-
-                map.put(id, item);
-            }
+            item.setMedidaCorporal(medida);
+            items.add(item);
         }
-
-        return new ArrayList<>(map.values());
+        return items;
     }
 }
-
