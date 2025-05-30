@@ -26,7 +26,7 @@ public class SecurityConfig {
                     "/api/login",
                     "/api/logout",
                     "/api/clientes/**",
-                    "api/medidas/**",
+                    "/api/medidas/**", //ACORDARSE DE ESTE PUNTO
                     "/api/instructores/**",
                     "/api/categorias/**",
                     "/api/ejercicios/**",
@@ -35,7 +35,9 @@ public class SecurityConfig {
                     "/uploads/**",
                     "/api/itemMedidas/medidasItem/**",
                     "/api/medidasItem/**",
-                    "/api/itemMedidas/"
+                    "/api/itemMedidas/",
+                    "/api/item-rutina-ejercicios",
+                    "/api/itemEjercicios"
                     
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")

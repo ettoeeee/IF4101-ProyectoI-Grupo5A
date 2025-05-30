@@ -5,8 +5,8 @@ public class ItemRutinaEjercicio {
 
     private int idRutina;
     private int idEjercicio;
-    private Integer seriesEjercicio;
-    private Integer repeticionesEjercicio;
+    private int seriesEjercicio;
+    private int repeticionesEjercicio;
     private String equipoEjercicio;
 
     // Constructor vacío
@@ -14,7 +14,7 @@ public class ItemRutinaEjercicio {
     }
 
     // Constructor completo
-    public ItemRutinaEjercicio(int idRutina, int idEjercicio, Integer seriesEjercicio, Integer repeticionesEjercicio, String equipoEjercicio) {
+    public ItemRutinaEjercicio(int idRutina, int idEjercicio, int seriesEjercicio, int repeticionesEjercicio, String equipoEjercicio) {
         this.idRutina = idRutina;
         this.idEjercicio = idEjercicio;
         this.seriesEjercicio = seriesEjercicio;
@@ -39,7 +39,7 @@ public class ItemRutinaEjercicio {
         this.idEjercicio = idEjercicio;
     }
 
-    public Integer getSeriesEjercicio() {
+    public int getSeriesEjercicio() {
         return seriesEjercicio;
     }
 
@@ -47,7 +47,7 @@ public class ItemRutinaEjercicio {
         this.seriesEjercicio = seriesEjercicio;
     }
 
-    public Integer getRepeticionesEjercicio() {
+    public int getRepeticionesEjercicio() {
         return repeticionesEjercicio;
     }
 
