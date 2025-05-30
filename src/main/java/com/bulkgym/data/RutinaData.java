@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.bulkgym.domain.Ejercicio;
 import com.bulkgym.domain.ItemRutinaMedida;
@@ -83,6 +87,37 @@ public class RutinaData {
 
 		List<Rutina> lista = jdbcTemplate.query(sql, new RutinaExtractor(), idRutina);
         return lista.isEmpty() ? null : lista.get(0);
+    }
+    
+    @Transactional
+    public int insertarRutina(Rutina rutina) {
+        String sql = """
+            INSERT INTO Rutina (
+              id_cliente,
+              fecha_creacion,
+              fecha_renovacion,
+              horario,
+              objetivo,
+              lesiones,
+              padecimientos
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, rutina.getIdCliente());
+            ps.setDate(2, rutina.getFechaCreacion());
+            ps.setDate(3, rutina.getFechaRenovacion());
+            ps.setString(4, rutina.getHorario());
+            ps.setString(5, rutina.getObjetivo());
+            ps.setString(6, rutina.getLesiones());
+            ps.setString(7, rutina.getPadecimientos());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().intValue();
     }
 
 }
