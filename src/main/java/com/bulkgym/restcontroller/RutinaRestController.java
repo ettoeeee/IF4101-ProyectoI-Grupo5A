@@ -2,9 +2,11 @@ package com.bulkgym.restcontroller;
 
 import java.net.URI;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import com.bulkgym.business.RutinaBusiness;
 import com.bulkgym.domain.Rutina;
 
@@ -37,7 +39,14 @@ public class RutinaRestController {
         @PathVariable int idCliente,
         @RequestBody Rutina rutina
     ) {
+        // Fuerza el uso de idCliente que viene en la ruta, 
+        // ignorando cualquier otro valor que el JSON pudiera incluir.
+        rutina.setIdCliente(idCliente);
+
         Rutina creada = rutinaBusiness.crearRutina(idCliente, rutina);
+
+        // Construye la URL relativa sin el contexto de /bulk-gym, 
+        // Spring agregará context-path automáticamente si está configurado.
         URI location = URI.create(
           String.format("/api/clientes/%d/rutinas/%d", idCliente, creada.getIdRutina())
         );

@@ -22,9 +22,9 @@ public class RutinaBusiness {
     public Rutina crearRutina(int idCliente, Rutina rutina) {
         // asocia al cliente
         rutina.setIdCliente(idCliente);
-        // insertam y recupera el id
-        int idGenerado = rutinaData.insertarRutina(rutina);
-        rutina.setIdRutina(idGenerado);
+        // inserta y recupera el id
+        int pk = rutinaData.insertarRutina(rutina);
+        rutina.setIdRutina(pk);
         return rutina;
     }
 

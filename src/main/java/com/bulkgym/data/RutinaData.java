@@ -93,27 +93,29 @@ public class RutinaData {
     public int insertarRutina(Rutina rutina) {
         String sql = """
             INSERT INTO Rutina (
-              id_cliente,
-              fecha_creacion,
-              fecha_renovacion,
-              horario,
-              objetivo,
-              lesiones,
+              id_cliente, 
+              id_instructor, 
+              fecha_creacion, 
+              fecha_renovacion, 
+              horario, 
+              objetivo, 
+              lesiones, 
               padecimientos
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, rutina.getIdCliente());
-            ps.setDate(2, rutina.getFechaCreacion());
-            ps.setDate(3, rutina.getFechaRenovacion());
-            ps.setString(4, rutina.getHorario());
-            ps.setString(5, rutina.getObjetivo());
-            ps.setString(6, rutina.getLesiones());
-            ps.setString(7, rutina.getPadecimientos());
+            ps.setInt(2, rutina.getIdInstructor());
+            ps.setDate(3, rutina.getFechaCreacion());
+            ps.setDate(4, rutina.getFechaRenovacion());
+            ps.setString(5, rutina.getHorario());
+            ps.setString(6, rutina.getObjetivo());
+            ps.setString(7, rutina.getLesiones());
+            ps.setString(8, rutina.getPadecimientos());
             return ps;
         }, keyHolder);
 

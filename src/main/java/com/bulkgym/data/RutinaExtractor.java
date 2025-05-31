@@ -21,7 +21,7 @@ public class RutinaExtractor implements ResultSetExtractor<List<Rutina>> {
 		Map<Integer, Rutina> map = new HashMap<Integer, Rutina>();
 		Rutina rutina = null;
 		while(rs.next()) {
-			Integer id = rs.getInt("cod_rutina");
+			Integer id = rs.getInt("id_rutina");
 			rutina = map.get(id);
 			if (rutina == null) {
 				rutina = new Rutina();

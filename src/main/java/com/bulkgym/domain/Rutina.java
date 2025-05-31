@@ -4,7 +4,8 @@ import java.sql.Date;
 
 public class Rutina {
 	private int idRutina,
-				idCliente;
+				idCliente,
+				idInstructor;
 	private Date fechaCreacion,
 					  fechaRenovacion;
 	private String horario,
@@ -59,6 +60,12 @@ public class Rutina {
     }
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
+    }
+    public int getIdInstructor() { 
+    	return idInstructor; 
+    }
+    public void setIdInstructor(int idInstructor) { 
+    	this.idInstructor = idInstructor; 
     }
 	// End of getters-setters.
 }// End of class [Rutina].
