@@ -1,6 +1,7 @@
 package com.bulkgym.restcontroller;
 
 import com.bulkgym.business.ClienteBusiness;
+import com.bulkgym.data.ClienteData;
 import com.bulkgym.domain.Cliente;
 import com.bulkgym.dto.ClienteDTO;
 import com.bulkgym.dto.RespuestaDTO;
@@ -19,6 +20,8 @@ public class ClienteRestController {
 
     @Autowired
     private ClienteBusiness clienteBusiness;
+    private ClienteData clienteData;
+
 
     @PostMapping
     public ResponseEntity<RespuestaDTO> crearCliente(@RequestBody ClienteDTO clienteDTO) {
@@ -113,4 +116,8 @@ public class ClienteRestController {
     public List<Cliente> obtenerClientesRecientes() {
         return clienteBusiness.obtenerClientesRecientes();
     }
+    
+    
+    //ISNTRUCTO 
+
 }

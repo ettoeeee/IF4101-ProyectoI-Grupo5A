@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.bulkgym.business.RutinaBusiness;
 import com.bulkgym.domain.Rutina;
+import com.bulkgym.dto.RutinaCompletaDTO;
 
 @RestController
 @RequestMapping("/api/clientes/{idCliente}/rutinas")
@@ -52,4 +53,20 @@ public class RutinaRestController {
         );
         return ResponseEntity.created(location).body(creada);
     }
+    
+    
+    
+    
+    
+    //VEROO
+    @PostMapping("/completa")
+    public ResponseEntity<Rutina> crearRutinaCompleta(
+        @PathVariable int idCliente,
+        @RequestBody RutinaCompletaDTO dto
+    ) {
+        Rutina creada = rutinaBusiness.crearRutinaCompleta(idCliente, dto);
+        URI location = URI.create("/api/clientes/" + idCliente + "/rutinas/" + creada.getIdRutina());
+        return ResponseEntity.created(location).body(creada);
+    }
+
 }
