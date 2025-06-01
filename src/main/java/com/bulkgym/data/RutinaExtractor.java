@@ -25,6 +25,8 @@ public class RutinaExtractor implements ResultSetExtractor<List<Rutina>> {
 			rutina = map.get(id);
 			if (rutina == null) {
 				rutina = new Rutina();
+				rutina.setIdCliente(rs.getInt("id_cliente"));
+				rutina.setIdInstructor(rs.getInt("id_instructor"));
 				rutina.setIdRutina(id);
 				rutina.setFechaCreacion(rs.getDate("fecha_creacion"));
 				rutina.setFechaRenovacion(rs.getDate("fecha_renovacion"));

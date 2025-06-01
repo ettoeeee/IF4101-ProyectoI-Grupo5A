@@ -1,5 +1,6 @@
 package com.bulkgym.business;
 
+import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,7 +110,20 @@ public class RutinaBusiness {
     }
 
     
-    
-    
+  
+    @Transactional(readOnly = true)
+    public List<Rutina> obtenerRutinasDesdeFecha(Date fechaLimite) {
+        // Validación adicional
+        if (fechaLimite == null) {
+            throw new IllegalArgumentException("La fecha límite no puede ser nula");
+        }
+        
+        // Obtener rutinas desde la fecha límite
+        List<Rutina> rutinas = rutinaData.encontrarRutinasDesdeFecha(fechaLimite);
+        
+        // Puedes agregar lógica de transformación aquí si es necesario
+        return rutinas;
+    }
+
     
 }

@@ -1,6 +1,7 @@
 package com.bulkgym.restcontroller;
 
 import java.net.URI;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import com.bulkgym.domain.Rutina;
 import com.bulkgym.dto.RutinaCompletaDTO;
 
 @RestController
-@RequestMapping("/api/clientes/{idCliente}/rutinas")
+//@RequestMapping("/api/clientes/{idCliente}/rutinas")
 public class RutinaRestController {
 
     @Autowired
@@ -68,5 +69,7 @@ public class RutinaRestController {
         URI location = URI.create("/api/clientes/" + idCliente + "/rutinas/" + creada.getIdRutina());
         return ResponseEntity.created(location).body(creada);
     }
+
+   
 
 }
