@@ -6,6 +6,9 @@ import java.util.Date;
 import com.bulkgym.domain.ItemRutinaMedida;
 import com.bulkgym.domain.ItemRutinaEjercicio;
 
+/**
+ * 
+ */
 public class ReporteRutinaDTO {
 
     // Datos del cliente
@@ -14,6 +17,7 @@ public class ReporteRutinaDTO {
     private int edadCliente;
 
     // Datos de la rutina
+    private int idRutina;
     private String objetivo;
     private Date fechaCreacion;
 
@@ -36,14 +40,6 @@ public class ReporteRutinaDTO {
 
     public void setTelefonoCliente(String telefonoCliente) {
         this.telefonoCliente = telefonoCliente;
-    }
-
-    public int getEdadCliente() {
-        return edadCliente;
-    }
-
-    public void setEdadCliente(int edadCliente) {
-        this.edadCliente = edadCliente;
     }
 
     public String getObjetivo() {
@@ -77,4 +73,22 @@ public class ReporteRutinaDTO {
     public void setEjercicios(List<ItemRutinaEjercicio> ejercicios) {
         this.ejercicios = ejercicios;
     }
+
+	public int getIdRutina() {
+		return idRutina;
+	}
+
+	public void setIdRutina(int idRutina2) {
+		this.idRutina = idRutina2;
+	}
+
+	public int getEdadCliente() {
+		return edadCliente;
+	}
+
+	public void setEdadCliente(int edadCliente) {
+		this.edadCliente = edadCliente;
+	}
+    
+    
 }

@@ -19,6 +19,26 @@ public class ItemRutinaMedidaData {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    private static final String SQL_POR_RUTINA = """
+            SELECT irm.idItem,
+                   irm.valorMedida,
+                   irm.codMedida,
+                   irm.id_Rutina,
+                   irm.codMedida,
+                   mc.imagen,
+                   mc.codMedida,
+                   mc.nombreMedida,
+                   mc.unidadMedida
+              FROM ItemRutinaMedida irm
+              JOIN MedidaCorporal mc ON irm.codMedida = mc.codMedida
+             WHERE irm.id_Rutina = ?
+        """;
+
+    @Transactional(readOnly = true)
+    public List<ItemRutinaMedida> findByRutinaId(int idRutina) {
+       return jdbcTemplate.query(SQL_POR_RUTINA, new ItemRutinaMedidaExtractor(), idRutina);
+    }
 
     @Transactional(readOnly = true)
     public List<ItemRutinaMedida> findAll() {

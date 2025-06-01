@@ -18,6 +18,21 @@ public class ItemRutinaEjercicioData {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    private static final String SQL_POR_RUTINA = """
+            SELECT ire.id_rutina,
+                   ire.id_ejercicio,
+                   ire.series_ejercicio,
+                   ire.repeticiones_ejercicio,
+                   ire.equipo_ejercicio
+              FROM ItemRutinaEjercicio ire
+             WHERE ire.id_rutina = ?
+        """;
+
+    @Transactional(readOnly = true)
+    public List<ItemRutinaEjercicio> findByRutinaId(int idRutina) {
+       return jdbcTemplate.query(SQL_POR_RUTINA, new ItemRutinaEjercicioExtractor(), idRutina);
+    }
 
     @Transactional(readOnly = true)
     public List<ItemRutinaEjercicio> findAll() {

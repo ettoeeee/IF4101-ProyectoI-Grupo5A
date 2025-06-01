@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.bulkgym.business.RutinaBusiness;
 import com.bulkgym.domain.Rutina;
+import com.bulkgym.dto.ReporteRutinaDTO;
 import com.bulkgym.dto.RutinaCompletaDTO;
+import com.bulkgym.util.ReportePdfUtil;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
 
 @RestController
 //@RequestMapping("/api/clientes/{idCliente}/rutinas")
@@ -18,10 +24,18 @@ public class RutinaRestController {
 
     @Autowired
     private RutinaBusiness rutinaBusiness;
+    
+    @Autowired
+    private ReportePdfUtil reportePdfUtil;
 
     @GetMapping
     public List<Rutina> listarRutinas(@PathVariable int idCliente) {
         return rutinaBusiness.obtenerRutinas(idCliente);
+    }
+    
+    @GetMapping("/buscar")
+    public List<Rutina> buscarRutinasPorNombreCliente(@RequestParam String nombreCliente) {
+        return rutinaBusiness.obtenerRutinasPorNombreCliente(nombreCliente);
     }
 
     @GetMapping("/{idRutina}")
@@ -55,9 +69,41 @@ public class RutinaRestController {
         return ResponseEntity.created(location).body(creada);
     }
     
-    
-    
-    
+    @GetMapping("/{idRutina}/pdf")
+    public ResponseEntity<byte[]> descargarPdfRutina(
+            @PathVariable("idCliente") int idCliente,
+            @PathVariable("idRutina")  int idRutina
+    ) {
+    	System.out.println("[DEBUG] >>> LLEGÓ A descargarPdfRutina: clienteId=" 
+    		    + idCliente + ", rutinaId=" + idRutina);
+    		Rutina r = rutinaBusiness.buscarRutina(idRutina);
+    		System.out.println("[DEBUG]    → Objeto Rutina cargado: " + r);
+    		System.out.println("[DEBUG]      r.getIdRutina()=" + r.getIdRutina() 
+    		    + ",  r.getIdCliente()=" + r.getIdCliente());
+    		if (r == null || r.getIdCliente() != idCliente) {
+    		    System.out.println("[DEBUG]    → Devolviendo 404 porque r es null o idCliente no coincide. "
+    		        + "r.getIdCliente()=" + (r == null ? "null" : r.getIdCliente()) 
+    		        + ", idCliente(path)=" + idCliente);
+    		    return ResponseEntity.notFound().build();
+    		}
+
+
+        ReporteRutinaDTO dto = rutinaBusiness.obtenerReporteRutinaDTO(idRutina);
+        if (dto == null) {
+            System.out.println("[DEBUG]  → Devolviendo 404 porque obtenerReporteRutinaDTO retornó null");
+            return ResponseEntity.notFound().build();
+        }
+
+        System.out.println("[DEBUG]  → Generando PDF para rutina " + idRutina);
+        byte[] pdfBytes = reportePdfUtil.generarPdfDesdeRutina(dto);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"rutina_" + idRutina + ".pdf\"")
+                .body(pdfBytes);
+    }
+
     
     //VEROO
     @PostMapping("/completa")
