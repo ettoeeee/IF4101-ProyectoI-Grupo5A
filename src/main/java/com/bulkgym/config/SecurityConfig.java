@@ -1,14 +1,23 @@
 package com.bulkgym.config;
 
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -20,6 +29,7 @@ public class SecurityConfig {
         return http
             .cors(cors -> cors.configurationSource(new CorsConfig().corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
             .securityMatcher("/api/**") 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
@@ -43,15 +53,18 @@ public class SecurityConfig {
                     
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
-                .requestMatchers("/trainer/**").hasRole("ENTRENADOR")
+                .requestMatchers("/trainer/**").hasRole("INSTRUCTOR")
                 .anyRequest().authenticated()
             )
-            .logout(logout -> logout
-                .logoutUrl("/api/logout")
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .permitAll()
-            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+    
+    
 }
+
