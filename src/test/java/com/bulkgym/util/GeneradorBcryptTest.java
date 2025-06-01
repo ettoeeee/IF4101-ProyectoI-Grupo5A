@@ -18,7 +18,7 @@ public class GeneradorBcryptTest {
     void generarHashEntrenador() {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         String hash = encoder.encode("entrenador123");
-        System.out.println("Hash generado para 'entrenador123': " + hash);
+        System.out.println("Hash generado para entrenador123: " + hash);
     }
 
     
