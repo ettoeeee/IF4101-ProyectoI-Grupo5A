@@ -12,4 +12,14 @@ public class GeneradorBcryptTest {
         String hash = encoder.encode("1234");
         System.out.println("Hash generado para 1234: " + hash);
     }
+    
+    
+    @Test
+    void generarHashEntrenador() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hash = encoder.encode("entrenador123");
+        System.out.println("Hash generado para 'entrenador123': " + hash);
+    }
+
+    
 }
