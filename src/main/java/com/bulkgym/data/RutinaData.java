@@ -122,5 +122,17 @@ public class RutinaData {
         return keyHolder.getKey().intValue();
     }
 
+    public List<Rutina> encontrarRutinasPorNombreCliente(String nombreCliente) {
+        String sql = """
+            SELECT r.id_rutina, r,id_cliente, r.id_instructor, r.fecha_creacion, r.fecha_renovacion, r.horario,
+                   r.objetivo, r.lesiones, r.padecimientos
+            FROM Rutina r
+            JOIN Cliente c ON r.id_cliente = c.id_cliente
+            WHERE c.nombre LIKE ?
+        """;
+
+        return jdbcTemplate.query(sql, new RutinaExtractor(), "%" + nombreCliente + "%");
+    }
+
 }
 

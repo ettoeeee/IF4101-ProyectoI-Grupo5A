@@ -22,6 +22,11 @@ public class RutinaRestController {
     public List<Rutina> listarRutinas(@PathVariable int idCliente) {
         return rutinaBusiness.obtenerRutinas(idCliente);
     }
+    
+    @GetMapping("/buscar")
+    public List<Rutina> buscarRutinasPorNombreCliente(@RequestParam String nombreCliente) {
+        return rutinaBusiness.obtenerRutinasPorNombreCliente(nombreCliente);
+    }
 
     @GetMapping("/{idRutina}")
     public ResponseEntity<Rutina> obtenerRutina(
@@ -53,10 +58,6 @@ public class RutinaRestController {
         );
         return ResponseEntity.created(location).body(creada);
     }
-    
-    
-    
-    
     
     //VEROO
     @PostMapping("/completa")

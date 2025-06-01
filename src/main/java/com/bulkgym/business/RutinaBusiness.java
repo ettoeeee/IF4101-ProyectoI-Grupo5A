@@ -28,6 +28,16 @@ public class RutinaBusiness {
     public List<Rutina> obtenerRutinas(int idCliente) {
         return rutinaData.encontrarRutinasPorCliente(idCliente);
     }
+    
+    @Transactional(readOnly = true)
+    public Rutina buscarRutina(int idRutina) {
+        return rutinaData.buscarPorId(idRutina);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Rutina> obtenerRutinasPorNombreCliente(String nombreCliente) {
+        return rutinaData.encontrarRutinasPorNombreCliente(nombreCliente);
+    }
 
     @Transactional
     public Rutina crearRutina(int idCliente, Rutina rutina) {
@@ -38,12 +48,6 @@ public class RutinaBusiness {
         rutina.setIdRutina(pk);
         return rutina;
     }
-
-    @Transactional(readOnly = true)
-    public Rutina buscarRutina(int idRutina) {
-        return rutinaData.buscarPorId(idRutina);
-    }
-    
     
     // VEROOO 
     @Autowired
@@ -106,10 +110,5 @@ public class RutinaBusiness {
             e.printStackTrace();
             throw new RuntimeException("Error en crearRutinaCompleta", e);
         }
-    }
-
-    
-    
-    
-    
+    }   
 }
