@@ -10,8 +10,8 @@ import java.security.Key;
 @Component
 public class JwtUtil {
 	
-	private final String secret = "ESTA_ES_TU_CLAVE_SECRETA_DE_256_BITS_AJUSTALA_BIEN"; // Debe ser >=256 bits
-    private final long expiracion = 1000 * 60 * 30; // 30 minutos
+	private final String secret = "Jq8LdF93vZpX3mTqE9wS6rR7FbMvC4UyHtNgAjKlZiWxPbQrSnBvLtGhMdNyZpKs"; // Debe ser >=256 bits
+    private final long expiracion = 1000 * 60 * 25; // 30 minutos
 
     private final Key key = Keys.hmacShaKeyFor(secret.getBytes());
 

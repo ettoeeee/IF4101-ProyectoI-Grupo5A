@@ -13,6 +13,26 @@ public class Rutina {
 			       lesiones,
 			       padecimientos;
 	
+	
+	
+	public Rutina() {
+		super();
+	}
+
+	public Rutina(int idRutina, int idCliente, int idInstructor, Date fechaCreacion, Date fechaRenovacion,
+			String horario, String objetivo, String lesiones, String padecimientos) {
+		super();
+		this.idRutina = idRutina;
+		this.idCliente = idCliente;
+		this.idInstructor = idInstructor;
+		this.fechaCreacion = fechaCreacion;
+		this.fechaRenovacion = fechaRenovacion;
+		this.horario = horario;
+		this.objetivo = objetivo;
+		this.lesiones = lesiones;
+		this.padecimientos = padecimientos;
+	}
+	
 	public int getIdRutina() {
 		return idRutina;
 	}

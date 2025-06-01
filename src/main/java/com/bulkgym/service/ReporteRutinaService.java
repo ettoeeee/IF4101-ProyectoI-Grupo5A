@@ -56,5 +56,7 @@ public class ReporteRutinaService {
         // 6. Generar PDF
         return reportePdfUtil.generarPdfDesdeRutina(dto);
     }
+    
+    
 }
 

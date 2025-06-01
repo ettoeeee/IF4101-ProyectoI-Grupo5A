@@ -1,6 +1,7 @@
 package com.bulkgym.config;
 
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -47,7 +48,10 @@ public class SecurityConfig {
                     "/api/itemMedidas/",
                     "/api/item-rutina-ejercicios",
                     "/api/itemEjercicios",
-                    "/api/rutinas/**"
+                    "/api/rutinas/**",
+                    "/api/rutinas/*/pdf",
+                    "/api/clientes/**/rutinas/**/pdf"
+
                     
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")

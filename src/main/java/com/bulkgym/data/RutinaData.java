@@ -79,14 +79,36 @@ public class RutinaData {
     @Transactional(readOnly = true)
     public Rutina buscarPorId(int idRutina) {
         String sql = """
-            SELECT id_rutina, id_cliente, id_instructor, fecha_creacion, fecha_renovacion, 
-                   horario, objetivo, lesiones, padecimientos
+            SELECT id_rutina,
+                   id_cliente,
+                   id_instructor,
+                   fecha_creacion,
+                   fecha_renovacion,
+                   horario,
+                   objetivo,
+                   lesiones,
+                   padecimientos
             FROM Rutina
             WHERE id_rutina = ?
         """;
 
-		List<Rutina> lista = jdbcTemplate.query(sql, new RutinaExtractor(), idRutina);
-        return lista.isEmpty() ? null : lista.get(0);
+        return jdbcTemplate.queryForObject(
+            sql,
+            (rs, rowNum) -> {
+                Rutina r = new Rutina();
+                r.setIdRutina(rs.getInt("id_rutina"));
+                r.setIdCliente(rs.getInt("id_cliente"));
+                r.setIdInstructor(rs.getInt("id_instructor"));
+                r.setFechaCreacion(rs.getDate("fecha_creacion"));
+                r.setFechaRenovacion(rs.getDate("fecha_renovacion"));
+                r.setHorario(rs.getString("horario"));
+                r.setObjetivo(rs.getString("objetivo"));
+                r.setLesiones(rs.getString("lesiones"));
+                r.setPadecimientos(rs.getString("padecimientos"));
+                return r;
+            },
+            idRutina
+        );
     }
     
     @Transactional

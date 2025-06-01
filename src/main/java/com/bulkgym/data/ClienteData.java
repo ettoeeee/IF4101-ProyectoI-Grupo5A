@@ -21,7 +21,7 @@ public class ClienteData {
 	    String sql = """
 	        SELECT c.id_cliente, c.activo,
 	               p.id_persona, p.nombre, p.apellidos, p.fecha_nacimiento,
-	               p.sexo, p.telefono, p.correo_electronico, p.imagen
+	               p.sexo, p.telefono, p.direccion, p.nombre_contacto_emergencia, p.tel_contacto_emergencia, p.correo_electronico, p.imagen
 	        FROM Cliente c
 	        JOIN Persona p ON c.id_persona = p.id_persona
 	        WHERE c.id_cliente = ?
