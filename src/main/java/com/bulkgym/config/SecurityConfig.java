@@ -37,7 +37,9 @@ public class SecurityConfig {
                     "/api/medidasItem/**",
                     "/api/itemMedidas/",
                     "/api/item-rutina-ejercicios",
-                    "/api/itemEjercicios"
+                    "/api/itemEjercicios",
+                    "/api/rutinas/*/pdf",
+                    "/api/clientes/**/rutinas/**/pdf"
                     
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
