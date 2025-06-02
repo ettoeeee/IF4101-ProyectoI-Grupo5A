@@ -17,7 +17,7 @@ public class CorsConfig {
 
         config.setAllowedOrigins(List.of(
             "http://localhost:4200",
-            "https://proyectogymgrupo5.vercel.app/"
+            "https://proyectoigrupo5.vercel.app/"
         ));
         
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
