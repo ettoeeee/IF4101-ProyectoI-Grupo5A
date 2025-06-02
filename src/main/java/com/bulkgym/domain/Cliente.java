@@ -16,5 +16,9 @@ public class Cliente extends Persona{
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
-	// End of getters-setters.
+
+
+	
+	
+	
 }// End of class [Cliente].

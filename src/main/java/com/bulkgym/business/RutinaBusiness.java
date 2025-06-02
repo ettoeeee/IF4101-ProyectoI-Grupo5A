@@ -121,6 +121,52 @@ public class RutinaBusiness {
     }   
 
 
+    // modificar rutina
+    @Transactional(readOnly = true)
+    public RutinaCompletaDTO obtenerRutinaCompleta(int idCliente, int idRutina) {
+        Rutina rutina = rutinaData.buscarPorId(idRutina);
+        if (rutina == null || rutina.getIdCliente() != idCliente) return null;
+
+        Cliente cliente = clienteData.buscarPorId(idCliente);
+        List<ItemRutinaMedida> medidas = itemRutinaMedidaData.findByRutinaId(idRutina);
+        List<ItemRutinaEjercicio> ejercicios = itemRutinaEjercicioData.findByRutinaId(idRutina);
+
+        RutinaCompletaDTO dto = new RutinaCompletaDTO();
+        dto.setIdRutina(idRutina);
+        dto.setIdInstructor(rutina.getIdInstructor());
+        dto.setHorario(rutina.getHorario());
+        dto.setObjetivo(rutina.getObjetivo());
+        dto.setLesiones(rutina.getLesiones());
+        dto.setPadecimientos(rutina.getPadecimientos());
+        dto.setFechaCreacion(rutina.getFechaCreacion());
+        dto.setFechaRenovacion(rutina.getFechaRenovacion());
+        dto.setCliente(cliente); // ✅ incluye cliente
+
+        dto.setMedidas(
+            medidas.stream().map(m -> {
+                ItemRutinaMedidaDTO d = new ItemRutinaMedidaDTO();
+                d.setIdMedidaCorporal(m.getMedidaCorporal().getCodMedida());
+                d.setValorMedida(m.getValorMedida());
+                d.setFechaMedicion(dto.getFechaCreacion());
+                return d;
+            }).toList()
+        );
+
+        dto.setEjercicios(
+            ejercicios.stream().map(e -> {
+                ItemRutinaEjercicioDTO d = new ItemRutinaEjercicioDTO();
+                d.setIdEjercicio(e.getIdEjercicio());
+                d.setSeries(e.getSeriesEjercicio());
+                d.setRepeticiones(e.getRepeticionesEjercicio());
+                d.setEquipo(e.getEquipoEjercicio());
+                return d;
+            }).toList()
+        );
+
+        return dto;
+    }
+
+
     
     public ReporteRutinaDTO obtenerReporteRutinaDTO(int idRutina) {
         Rutina rutina = rutinaData.buscarPorId(idRutina);
@@ -167,5 +213,70 @@ public class RutinaBusiness {
 
         return dto;
     }
+    
+    @Transactional
+    public void actualizarRutinaCompleta(int idCliente, int idRutina, RutinaCompletaDTO dto) {
+        Rutina existente = rutinaData.buscarPorId(idRutina);
+        if (existente == null || existente.getIdCliente() != idCliente) {
+            throw new IllegalArgumentException("Rutina no encontrada o no pertenece al cliente.");
+        }
+
+        // Actualizar datos básicos
+        existente.setObjetivo(dto.getObjetivo());
+        existente.setLesiones(dto.getLesiones());
+        existente.setPadecimientos(dto.getPadecimientos());
+        existente.setHorario(dto.getHorario());
+        existente.setFechaCreacion(dto.getFechaCreacion());
+        existente.setFechaRenovacion(dto.getFechaRenovacion());
+        existente.setIdInstructor(dto.getIdInstructor());
+
+        rutinaData.update(existente); // Asegúrate de tener este método implementado
+
+        // Limpiar medidas y ejercicios anteriores
+        itemRutinaMedidaData.eliminarPorRutina(idRutina);
+        itemRutinaEjercicioData.eliminarPorRutina(idRutina);
+
+        // Insertar medidas nuevas
+        for (ItemRutinaMedidaDTO medida : dto.getMedidas()) {
+            ItemRutinaMedida item = new ItemRutinaMedida();
+            item.setValorMedida(medida.getValorMedida());
+            item.setRutina(existente);
+
+            MedidaCorporal mc = new MedidaCorporal();
+            mc.setCodMedida(medida.getIdMedidaCorporal());
+            item.setMedidaCorporal(mc);
+
+            itemRutinaMedidaData.guardar(item);
+        }
+
+        // Insertar ejercicios nuevos
+        for (ItemRutinaEjercicioDTO ejercicio : dto.getEjercicios()) {
+            ItemRutinaEjercicio item = new ItemRutinaEjercicio();
+            item.setIdRutina(idRutina);
+            item.setIdEjercicio(ejercicio.getIdEjercicio());
+            item.setSeriesEjercicio(ejercicio.getSeries());
+            item.setRepeticionesEjercicio(ejercicio.getRepeticiones());
+            item.setEquipoEjercicio(ejercicio.getEquipo());
+
+            itemRutinaEjercicioData.guardar(item);
+        }
+    }
+
+    
+    @Transactional
+    public boolean eliminarRutina(int idCliente, int idRutina) {
+        Rutina existente = rutinaData.buscarPorId(idRutina);
+        if (existente == null || existente.getIdCliente() != idCliente) {
+            return false;
+        }
+
+        // Eliminar medidas y ejercicios relacionados primero
+        itemRutinaMedidaData.eliminarPorRutina(idRutina);
+        itemRutinaEjercicioData.eliminarPorRutina(idRutina);
+
+        // Luego eliminar la rutina principal
+        return rutinaData.eliminarRutina(idRutina);
+    }
+
 
 }

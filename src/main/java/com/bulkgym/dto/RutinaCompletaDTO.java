@@ -4,6 +4,8 @@ package com.bulkgym.dto;
 import java.sql.Date;
 import java.util.List;
 
+import com.bulkgym.domain.Cliente;
+
 public class RutinaCompletaDTO {
 	 private int idInstructor;
 	    private String horario;
@@ -17,8 +19,25 @@ public class RutinaCompletaDTO {
 	    private List<ItemRutinaEjercicioDTO> ejercicios;
     
     
-    
-    
+	    private int idRutina;
+
+	    public int getIdRutina() {
+	        return idRutina;
+	    }
+
+	    public void setIdRutina(int idRutina) {
+	        this.idRutina = idRutina;
+	    }
+	    private Cliente cliente;
+
+	    public Cliente getCliente() {
+	        return cliente;
+	    }
+
+	    public void setCliente(Cliente cliente) {
+	        this.cliente = cliente;
+	    }
+	    
 	public int getIdInstructor() {
 		return idInstructor;
 	}

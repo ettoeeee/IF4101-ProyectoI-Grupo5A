@@ -19,6 +19,8 @@ public class EjercicioBusiness {
         return ejercicioData.findAll();
     }
 
+    
+    
     public void insertarEjercicio(Ejercicio ejercicio) {
         ejercicioData.guardar(ejercicio);
     }
@@ -52,6 +54,9 @@ public class EjercicioBusiness {
 
     public int contarCategorias() {
         return ejercicioData.contarCategorias();
+    }
+    public Ejercicio buscarPorId(int id) {
+        return ejercicioData.findById(id); 
     }
 
 

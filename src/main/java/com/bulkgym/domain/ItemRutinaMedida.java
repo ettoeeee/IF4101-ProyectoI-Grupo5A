@@ -2,7 +2,7 @@ package com.bulkgym.domain;
 
 
 
-public class ItemRutinaMedida extends MedidaCorporal{
+public class ItemRutinaMedida {
 	private int idItemRutinaMedida;
 	private double valorMedida;
 	

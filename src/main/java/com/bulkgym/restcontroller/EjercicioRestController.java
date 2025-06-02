@@ -102,4 +102,15 @@ public class EjercicioRestController {
         return respuesta;
     }
 
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Ejercicio> buscarPorId(@PathVariable int id) {
+        Ejercicio ejercicio = ejercicioBusiness.buscarPorId(id);
+        if (ejercicio == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ejercicio);
+    }
+
+
 }

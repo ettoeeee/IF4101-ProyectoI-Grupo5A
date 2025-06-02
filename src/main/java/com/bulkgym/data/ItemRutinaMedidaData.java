@@ -40,6 +40,15 @@ public class ItemRutinaMedidaData {
        return jdbcTemplate.query(SQL_POR_RUTINA, new ItemRutinaMedidaExtractor(), idRutina);
     }
 
+    
+    @Transactional
+    public void eliminarPorRutina(int idRutina) {
+        String sql = "DELETE FROM ItemRutinaMedida WHERE id_Rutina = ?";
+        jdbcTemplate.update(sql, idRutina);
+    }
+
+
+
     @Transactional(readOnly = true)
     public List<ItemRutinaMedida> findAll() {
         String sql = """

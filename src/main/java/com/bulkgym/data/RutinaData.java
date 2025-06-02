@@ -34,6 +34,12 @@ public class RutinaData {
         return jdbcTemplate.query(sql, new RutinaExtractor(), idCliente);
     }
 
+    @Transactional
+    public boolean eliminarRutina(int idRutina) {
+        String sql = "DELETE FROM Rutina WHERE id_rutina = ?";
+        return jdbcTemplate.update(sql, idRutina) > 0;
+    }
+
     // Obtener una rutina específica con su lista de ejercicios
     @Transactional(readOnly = true)
     public List<Ejercicio> obtenerEjerciciosDeRutina(int idRutina) {
@@ -47,6 +53,35 @@ public class RutinaData {
 
         return jdbcTemplate.query(sql, new EjercicioExtractor(), idRutina);
     }
+    
+    
+    
+    @Transactional
+    public void update(Rutina rutina) {
+        String sql = """
+            UPDATE Rutina
+            SET id_instructor = ?, 
+                fecha_creacion = ?, 
+                fecha_renovacion = ?, 
+                horario = ?, 
+                objetivo = ?, 
+                lesiones = ?, 
+                padecimientos = ?
+            WHERE id_rutina = ?
+        """;
+
+        jdbcTemplate.update(sql,
+            rutina.getIdInstructor(),
+            rutina.getFechaCreacion(),
+            rutina.getFechaRenovacion(),
+            rutina.getHorario(),
+            rutina.getObjetivo(),
+            rutina.getLesiones(),
+            rutina.getPadecimientos(),
+            rutina.getIdRutina()
+        );
+    }
+
 
     // Obtener medidas corporales asociadas a una rutina
     @Transactional(readOnly = true)

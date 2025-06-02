@@ -109,4 +109,6 @@ public class MedidaCorporalData {
         """;
         return jdbcTemplate.query(sql, new MedidaCorporalExtractor());
     }
+    
+    
 }

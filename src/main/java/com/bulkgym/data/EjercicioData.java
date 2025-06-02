@@ -117,4 +117,5 @@ public class EjercicioData {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
+    
 }

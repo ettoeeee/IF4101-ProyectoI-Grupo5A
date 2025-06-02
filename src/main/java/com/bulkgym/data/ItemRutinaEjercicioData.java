@@ -33,7 +33,16 @@ public class ItemRutinaEjercicioData {
     public List<ItemRutinaEjercicio> findByRutinaId(int idRutina) {
        return jdbcTemplate.query(SQL_POR_RUTINA, new ItemRutinaEjercicioExtractor(), idRutina);
     }
+    @Transactional
+    public void eliminarPorRutina(int idRutina) {
+        String sql = "DELETE FROM ItemRutinaEjercicio WHERE id_rutina = ?";
+        jdbcTemplate.update(sql, idRutina);
+    }
 
+    
+    
+    
+    
     @Transactional(readOnly = true)
     public List<ItemRutinaEjercicio> findAll() {
         String sql = """

@@ -114,5 +114,47 @@ public class RutinaRestController {
         URI location = URI.create("/api/clientes/" + idCliente + "/rutinas/" + creada.getIdRutina());
         return ResponseEntity.created(location).body(creada);
     }
+    
+    
+    
+    
+    //modificarrutina 
+    @GetMapping("/{idRutina}/completa")
+    public ResponseEntity<RutinaCompletaDTO> obtenerRutinaCompleta(
+        @PathVariable int idCliente,
+        @PathVariable int idRutina
+    ) {
+        RutinaCompletaDTO dto = rutinaBusiness.obtenerRutinaCompleta(idCliente, idRutina);
+        if (dto == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dto);
+    }
+
+
+    @PutMapping("/{idRutina}")
+    public ResponseEntity<Void> actualizarRutinaCompleta(
+        @PathVariable int idCliente,
+        @PathVariable int idRutina,
+        @RequestBody RutinaCompletaDTO dto
+    ) {
+        rutinaBusiness.actualizarRutinaCompleta(idCliente, idRutina, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{idRutina}")
+    public ResponseEntity<Void> eliminarRutina(
+        @PathVariable int idCliente,
+        @PathVariable int idRutina
+    ) {
+        boolean eliminado = rutinaBusiness.eliminarRutina(idCliente, idRutina);
+        if (eliminado) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found
+        }
+    }
+    
+    
+    
+
 
 }
