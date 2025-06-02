@@ -25,7 +25,7 @@ public class RutinaData {
     @Transactional(readOnly = true)
     public List<Rutina> encontrarRutinasPorCliente(int idCliente) {
         String sql = """
-            SELECT r.id_rutina, r.fecha_creacion, r.fecha_renovacion, r.horario,
+            SELECT r.id_rutina, r.id_cliente, r.id_instructor, r.fecha_creacion, r.fecha_renovacion, r.horario,
                    r.objetivo, r.lesiones, r.padecimientos
             FROM Rutina r
             WHERE r.id_cliente = ?
