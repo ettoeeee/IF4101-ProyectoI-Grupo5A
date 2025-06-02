@@ -35,10 +35,6 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/login",
                     "/api/logout",
-                    "/api/clientes/**",	
-                    "/api/clientes/*/rutinas/vigente",
-                    "/api/itemMedidas/medidasItem",   // ← ✅ ahora permitido
-                    "/api/ejercicios/**"        ,      // ← ✅ ahora permitido
                     "/uploads/**"
                 ).permitAll()
 
@@ -66,7 +62,11 @@ public class SecurityConfig {
                     "/api/rutinas/recientes/**",
                     "/api/rutinas/**",
                     "/api/rutinas/*/pdf",
-                    
+                    "/api/clientes/**",	
+                    "/api/clientes/*/rutinas/vigente",
+                    "/api/itemMedidas/medidasItem",   
+                    "/api/ejercicios/**"        ,      
+                   
                     "/api/clientes/**/rutinas/**/pdf"
                 ).hasRole("INSTRUCTOR")
 
