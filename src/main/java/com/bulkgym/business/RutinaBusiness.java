@@ -76,6 +76,31 @@ public class RutinaBusiness {
             String json = new ObjectMapper().writeValueAsString(dto);
             System.out.println("📥 DTO recibido: " + json);
 
+            //  Validar si ya tiene una rutina vigente
+            if (rutinaData.tieneRutinaVigente(idCliente)) {
+                throw new IllegalArgumentException("El cliente ya tiene una rutina vigente.");
+            }
+
+            //  Validar que haya al menos una medida
+            if (dto.getMedidas() == null || dto.getMedidas().isEmpty()) {
+                throw new IllegalArgumentException("La rutina debe tener al menos una medida.");
+            }
+
+            // Validar que haya al menos un ejercicio
+            if (dto.getEjercicios() == null || dto.getEjercicios().isEmpty()) {
+                throw new IllegalArgumentException("La rutina debe tener al menos un ejercicio.");
+            }
+
+            // 4️Asignar fecha de renovación automática si no viene
+            if (dto.getFechaCreacion() == null) {
+                dto.setFechaCreacion(new Date(System.currentTimeMillis()));
+            }
+
+            if (dto.getFechaRenovacion() == null) {
+                dto.setFechaRenovacion(Date.valueOf(dto.getFechaCreacion().toLocalDate().plusMonths(3)));
+            }
+
+            //  Crear la rutina base
             Rutina rutina = new Rutina();
             rutina.setIdCliente(idCliente);
             rutina.setIdInstructor(dto.getIdInstructor());
@@ -89,7 +114,7 @@ public class RutinaBusiness {
             int idRutina = rutinaData.insertarRutina(rutina);
             rutina.setIdRutina(idRutina);
 
-            // medidas
+            // Guardar medidas
             for (ItemRutinaMedidaDTO medida : dto.getMedidas()) {
                 ItemRutinaMedida item = new ItemRutinaMedida();
                 item.setValorMedida(medida.getValorMedida());
@@ -102,7 +127,7 @@ public class RutinaBusiness {
                 itemRutinaMedidaData.guardar(item);
             }
 
-            // ejrecicios
+            // Guardar ejercicios
             for (ItemRutinaEjercicioDTO ejercicio : dto.getEjercicios()) {
                 ItemRutinaEjercicio item = new ItemRutinaEjercicio();
                 item.setIdRutina(idRutina);
@@ -117,12 +142,12 @@ public class RutinaBusiness {
             return rutina;
 
         } catch (Exception e) {
-            System.err.println("Error al guardar rutina: " + e.getMessage());
+            System.err.println(" Error al guardar rutina: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Error en crearRutinaCompleta", e);
         }
+    }
 
-    }   
 
 
     // modificar rutina

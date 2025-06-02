@@ -35,6 +35,19 @@ public class RutinaData {
 
         return jdbcTemplate.query(sql, new RutinaExtractor(), idCliente);
     }
+    
+    @Transactional(readOnly = true)
+    public boolean tieneRutinaVigente(int idCliente) {
+        String sql = """
+            SELECT COUNT(*) 
+            FROM Rutina 
+            WHERE id_cliente = ? 
+              AND fecha_renovacion >= GETDATE()
+        """;
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idCliente);
+        return count != null && count > 0;
+    }
+
 
     @Transactional
     public boolean eliminarRutina(int idRutina) {
