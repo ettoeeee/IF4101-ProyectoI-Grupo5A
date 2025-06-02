@@ -48,6 +48,9 @@ public class SecurityConfig {
                     "/api/itemMedidas/",
                     "/api/item-rutina-ejercicios",
                     "/api/itemEjercicios",
+
+                    "/api/rutinas/recientes/**",
+
                     "/api/rutinas/**",
                     "/api/rutinas/*/pdf",
                     "/api/clientes/**/rutinas/**/pdf"

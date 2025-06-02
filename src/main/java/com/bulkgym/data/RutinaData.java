@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -144,6 +146,29 @@ public class RutinaData {
         return keyHolder.getKey().intValue();
     }
 
+
+    
+    @Transactional(readOnly = true)
+    public List<Rutina> encontrarRutinasDesdeFecha(Date fechaLimite) {
+        String sql = """
+            SELECT 
+                r.id_rutina, 
+                r.id_cliente, 
+                r.id_instructor, 
+                r.fecha_creacion, 
+                r.fecha_renovacion, 
+                r.horario,
+                r.objetivo, 
+                r.lesiones, 
+                r.padecimientos
+            FROM Rutina r
+            WHERE r.fecha_creacion >= ?
+            ORDER BY r.fecha_creacion DESC
+        """;
+
+        return jdbcTemplate.query(sql, new RutinaExtractor(), fechaLimite);
+    }
+
     public List<Rutina> encontrarRutinasPorNombreCliente(String nombreCliente) {
         String sql = """
             SELECT r.id_rutina, r,id_cliente, r.id_instructor, r.fecha_creacion, r.fecha_renovacion, r.horario,
@@ -154,6 +179,7 @@ public class RutinaData {
         """;
 
         return jdbcTemplate.query(sql, new RutinaExtractor(), "%" + nombreCliente + "%");
+
     }
 
 }

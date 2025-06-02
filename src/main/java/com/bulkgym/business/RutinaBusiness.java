@@ -1,6 +1,10 @@
 package com.bulkgym.business;
 
+
+import java.sql.Date;
+
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,6 +126,24 @@ public class RutinaBusiness {
 
 
     
+
+  
+    @Transactional(readOnly = true)
+    public List<Rutina> obtenerRutinasDesdeFecha(Date fechaLimite) {
+        // Validación adicional
+        if (fechaLimite == null) {
+            throw new IllegalArgumentException("La fecha límite no puede ser nula");
+        }
+        
+        // Obtener rutinas desde la fecha límite
+        List<Rutina> rutinas = rutinaData.encontrarRutinasDesdeFecha(fechaLimite);
+        
+        // Puedes agregar lógica de transformación aquí si es necesario
+        return rutinas;
+    }
+
+    
+
     public ReporteRutinaDTO obtenerReporteRutinaDTO(int idRutina) {
         Rutina rutina = rutinaData.buscarPorId(idRutina);
         if (rutina == null) return null;
@@ -167,5 +189,6 @@ public class RutinaBusiness {
 
         return dto;
     }
+
 
 }
