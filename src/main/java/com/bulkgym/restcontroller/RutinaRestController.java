@@ -55,14 +55,12 @@ public class RutinaRestController {
         @PathVariable int idCliente,
         @RequestBody Rutina rutina
     ) {
-        // Fuerza el uso de idCliente que viene en la ruta, 
-        // ignorando cualquier otro valor que el JSON pudiera incluir.
+       
         rutina.setIdCliente(idCliente);
 
         Rutina creada = rutinaBusiness.crearRutina(idCliente, rutina);
 
-        // Construye la URL relativa sin el contexto de /bulk-gym, 
-        // Spring agregará context-path automáticamente si está configurado.
+
         URI location = URI.create(
           String.format("/api/clientes/%d/rutinas/%d", idCliente, creada.getIdRutina())
         );
@@ -148,16 +146,14 @@ public class RutinaRestController {
     ) {
         boolean eliminado = rutinaBusiness.eliminarRutina(idCliente, idRutina);
         if (eliminado) {
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build(); 
         } else {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            return ResponseEntity.notFound().build(); 
         }
     }
     
     
-    
-
-
+   
    
 
 }
