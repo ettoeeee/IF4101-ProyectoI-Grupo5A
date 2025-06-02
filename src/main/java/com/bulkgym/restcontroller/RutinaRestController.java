@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 
 
 @RestController
-//@RequestMapping("/api/clientes/{idCliente}/rutinas")
+@RequestMapping("/api/clientes/{idCliente}/rutinas")
 public class RutinaRestController {
 
     @Autowired
