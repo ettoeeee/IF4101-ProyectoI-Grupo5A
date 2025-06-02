@@ -18,7 +18,7 @@ public class CorsConfig {
         config.setAllowedOrigins(List.of(
             "http://localhost:4200",
             "https://proyectoigrupo5.vercel.app/",
-            " https://8a5f-163-178-107-104.ngrok-free.app"
+            "https://8a5f-163-178-107-104.ngrok-free.app"
         ));
         
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
