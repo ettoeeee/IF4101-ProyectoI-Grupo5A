@@ -11,7 +11,7 @@ import java.security.Key;
 public class JwtUtil {
 	
 	private final String secret = "Jq8LdF93vZpX3mTqE9wS6rR7FbMvC4UyHtNgAjKlZiWxPbQrSnBvLtGhMdNyZpKs"; // Debe ser >=256 bits
-    private final long expiracion = 1000 * 60 * 25; // 30 minutos
+    private final long expiracion = 1000 * 60 * 25; // 25 minutos
 
     private final Key key = Keys.hmacShaKeyFor(secret.getBytes());
 
