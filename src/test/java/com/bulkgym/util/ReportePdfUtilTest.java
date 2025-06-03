@@ -27,6 +27,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ReportePdfUtilTest {
 
+	
     @InjectMocks
     private ReportePdfUtil reportePdfUtil;
 
@@ -83,7 +84,7 @@ class ReportePdfUtilTest {
         when(dto.getMedidas()).thenReturn(List.of(itemMedida));
 
         // mock item de ejercicio con dos categorías
-        //when(itemRutinaEjercicio.getEjercicio()).thenReturn(ejercicio);
+        //when(itemRutinaEjercicio.getIdEjercicio()).thenReturn(39);
         when(itemRutinaEjercicio.getSeriesEjercicio()).thenReturn(4);
         when(itemRutinaEjercicio.getRepeticionesEjercicio()).thenReturn(12);
         when(ejercicio.getNombreEjercicio()).thenReturn("Sentadilla");
@@ -111,4 +112,5 @@ class ReportePdfUtilTest {
         assertTrue(pageText.contains("Sentadilla"));
         assertTrue(pageText.contains("Pierna") && pageText.contains("Fuerza"));
     }
+    
 }
