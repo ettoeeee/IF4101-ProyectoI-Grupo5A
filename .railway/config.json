@@ -1,8 +1,11 @@
 {
   "build": {
     "builder": "NIXPACKS",
-    "nixpacksPlan": {
+    "nixpacksConfig": {
       "phases": {
+        "setup": {
+          "nixPkgs": ["jdk21", "maven"]
+        },
         "build": {
           "cmds": ["mvn clean package -DskipTests"]
         },
@@ -13,3 +16,4 @@
     }
   }
 }
+
